@@ -26,9 +26,17 @@ else {
 $publishedNotes = Get-ChildItem -LiteralPath $vaultRoot -Recurse -File -Filter "*.md" |
     Where-Object {
         $relativePath = [System.IO.Path]::GetRelativePath($vaultRoot, $_.FullName)
+        $text = Get-Content -LiteralPath $_.FullName -Raw
+        $frontmatter = [regex]::Match(
+            $text,
+            '\A---\s*\r?\n(?<content>.*?)\r?\n---\s*(?:\r?\n|$)',
+            [System.Text.RegularExpressions.RegexOptions]::Singleline
+        )
+
         $relativePath -notmatch '(^|[\\/])\.' -and
         $relativePath -notin @("task_plan.md", "findings.md", "progress.md") -and
-        (Get-Content -LiteralPath $_.FullName -Raw) -match '(?ms)\A---\s*\r?\n.*?^publish:\s*true\s*$.*?^---\s*$'
+        $frontmatter.Success -and
+        $frontmatter.Groups["content"].Value -match '(?m)^publish:\s*true\s*$'
     }
 
 foreach ($note in $publishedNotes) {
