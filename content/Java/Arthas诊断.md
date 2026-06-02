@@ -93,7 +93,7 @@ super-class       +-java.lang.Object
 class-loader      +-sun.misc.Launcher$AppClassLoader@3d4eac69
                     +-sun.misc.Launcher$ExtClassLoader@66350f69
 classLoaderHash   3d4eac69
- 
+
 Affect(row-cnt:1) cost in 875 ms.
 ```
 
@@ -180,7 +180,7 @@ org.mybatis.spring.transaction.SpringManagedTransactionFactory#newTransaction(ja
 **通过tt方法检索DataSource中隐藏的数据库连接信息**
 
 ```shell
-tt -t org.mybatis.spring.transaction.SpringManagedTransactionFactory newTransaction -n 5 
+tt -t org.mybatis.spring.transaction.SpringManagedTransactionFactory newTransaction -n 5
 
 tt -i 1001 -w 'params[0].**'
 ```
