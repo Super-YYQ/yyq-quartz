@@ -41,3 +41,89 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.home-hero {
+  padding: 2.5rem 2rem;
+  border: 1px solid var(--lightgray);
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--tertiary) 24%, transparent),
+      transparent 35%
+    ),
+    color-mix(in srgb, var(--light) 92%, white);
+
+  h1 {
+    margin-top: 0;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+  }
+
+  p {
+    max-width: 46rem;
+    font-size: 1.05rem;
+  }
+}
+
+.home-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.home-card {
+  display: flex;
+  min-height: 8rem;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1.25rem;
+  border: 1px solid var(--lightgray);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--light) 94%, white);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+
+  strong {
+    color: var(--dark);
+    font-family: var(--headerFont);
+    font-size: 1.3rem;
+  }
+
+  span:last-child {
+    color: var(--darkgray);
+    font-weight: 400;
+  }
+}
+
+.home-card:hover {
+  border-color: var(--tertiary);
+  transform: translateY(-2px);
+}
+
+.home-card-kicker {
+  color: var(--secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.home-graph-card {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px dashed var(--gray);
+  border-radius: 1rem;
+  background: var(--highlight);
+
+  h2 {
+    margin-top: 0;
+  }
+}
+
+@media all and ($mobile) {
+  .home-hero {
+    padding: 1.5rem;
+  }
+
+  .home-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
