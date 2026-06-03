@@ -3,6 +3,16 @@ title: YYQ 的知识库
 publish: true
 ---
 
+<nav class="home-topbar" aria-label="首页导航">
+  <a class="home-topbar-brand" href="/">YYQ 的知识库</a>
+  <div class="home-topbar-links">
+    <a href="/Java/Java索引">Java</a>
+    <a href="/windows/Windows索引">Windows</a>
+    <a href="/blog/博客索引">博客</a>
+    <a href="/windows/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages">发布链路</a>
+  </div>
+</nav>
+
 <section class="home-hero">
 
 # YYQ 的知识库
