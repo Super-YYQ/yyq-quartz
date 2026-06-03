@@ -9,56 +9,77 @@ publish: true
     <a href="/Java/Java索引">Java</a>
     <a href="/windows/Windows索引">Windows</a>
     <a href="/blog/博客索引">博客</a>
-    <a href="/windows/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages">发布链路</a>
+    <a href="/tags">标签</a>
   </div>
 </nav>
 
-<section class="home-hero">
-
-# YYQ 的知识库
-
-技术、工具与知识管理的公开笔记入口。这里整理 Java 开发、Windows 效率配置、博客维护和 Obsidian 自动发布实践。
-
+<section class="yyq-home-hero">
+  <div class="yyq-hero-copy">
+    <h1>技术、工具与知识管理</h1>
+    <p>记录、整理、分享，构建属于自己的数字知识花园</p>
+    <div class="yyq-hero-meta">
+      <span>持续记录</span>
+      <span>公开分享</span>
+      <span>知识链接</span>
+    </div>
+  </div>
 </section>
 
-<section class="home-card-grid">
-
-<a class="home-card" href="/Java/Java索引">
-  <span class="home-card-kicker">开发实践</span>
-  <strong>Java</strong>
-  <span>诊断工具、框架经验与后端开发笔记。</span>
-</a>
-
-<a class="home-card" href="/windows/Windows索引">
-  <span class="home-card-kicker">效率配置</span>
-  <strong>Windows</strong>
-  <span>系统配置、软件清单、网络环境与自动化记录。</span>
-</a>
-
-<a class="home-card" href="/blog/博客索引">
-  <span class="home-card-kicker">站点维护</span>
-  <strong>博客</strong>
-  <span>博客搭建、发布链路与内容整理实践。</span>
-</a>
-
-<a class="home-card" href="/windows/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages">
-  <span class="home-card-kicker">工具运维</span>
-  <strong>工具运维</strong>
-  <span>Obsidian、Quartz、Cloudflare Pages 与 GitHub Actions。</span>
-</a>
-
+<section class="yyq-category-grid" aria-label="分类索引">
+  <a class="yyq-category-card yyq-java" href="/Java/Java索引">
+    <span class="yyq-category-icon">♨</span>
+    <strong>Java</strong>
+    <small>基础、并发、JVM、源码</small>
+    <p>诊断工具、开发实践、框架源码解析与问题复盘。</p>
+    <span class="yyq-card-arrow">→</span>
+  </a>
+  <a class="yyq-category-card yyq-windows" href="/windows/Windows索引">
+    <span class="yyq-category-icon">▦</span>
+    <strong>Windows</strong>
+    <small>系统、终端、效率工具</small>
+    <p>软件清单、系统配置、终端美化与故障排查。</p>
+    <span class="yyq-card-arrow">→</span>
+  </a>
+  <a class="yyq-category-card yyq-blog" href="/blog/博客索引">
+    <span class="yyq-category-icon">✎</span>
+    <strong>博客</strong>
+    <small>搭建、维护、记录</small>
+    <p>博客搭建维护、学习记录与阶段性思考沉淀。</p>
+    <span class="yyq-card-arrow">→</span>
+  </a>
+  <a class="yyq-category-card yyq-tools" href="/windows/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages">
+    <span class="yyq-category-icon">✚</span>
+    <strong>工具运维</strong>
+    <small>自动化、部署、知识库</small>
+    <p>开发工具、自动发布、Cloudflare Pages 与运维脚本。</p>
+    <span class="yyq-card-arrow">→</span>
+  </a>
 </section>
 
-## 最近更新
-
-- [[windows/Quartz 4 升级 Quartz 5 复盘|Quartz 4 升级 Quartz 5 复盘]]
-- [[windows/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages|Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages]]
-- [[windows/Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置|Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置]]
-
-<section class="home-graph-card">
-
-## 知识图谱
-
-Graph View 会保留为探索工具，但不再常驻在每篇文章右侧。先从分类卡片和最近更新进入内容，后续会补一个更完整的知识图谱入口页。
-
+<section class="yyq-recent-panel" aria-label="最近更新">
+  <div class="yyq-section-head">
+    <h2>最近更新</h2>
+    <a href="/tags">查看全部 →</a>
+  </div>
+  <a class="yyq-update-row" href="/windows/Quartz 4 升级 Quartz 5 复盘">
+    <span>
+      <strong>Quartz 4 升级 Quartz 5 复盘</strong>
+      <em>记录从 Quartz 4 升级到 Quartz 5 的配置、构建与部署过程。</em>
+    </span>
+    <small>Quartz 5</small>
+  </a>
+  <a class="yyq-update-row" href="/windows/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages">
+    <span>
+      <strong>Obsidian 自动发布 Quartz</strong>
+      <em>通过自动化流程将 Obsidian 笔记发布到 Quartz 公开站点。</em>
+    </span>
+    <small>Obsidian</small>
+  </a>
+  <a class="yyq-update-row" href="/windows/Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置">
+    <span>
+      <strong>Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置</strong>
+      <em>记录公司网络环境下 TUN、终端代理和 Codex 的共存方案。</em>
+    </span>
+    <small>Windows</small>
+  </a>
 </section>
