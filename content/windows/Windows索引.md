@@ -24,3 +24,4 @@ Windows 软件、效率工具与环境配置笔记。
 ## 知识库发布
 
 - [[Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages]]：从私人笔记筛选公开内容，并自动部署为静态网站
+- [[Quartz 4 升级 Quartz 5 复盘]]：Quartz 大版本迁移过程、问题排查与主题调研
