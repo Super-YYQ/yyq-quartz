@@ -127,3 +127,52 @@
     grid-template-columns: 1fr;
   }
 }
+
+body[data-slug="index"] {
+  .page {
+    max-width: 1180px;
+  }
+
+  .page > #quartz-body {
+    grid-template:
+      "grid-header" auto
+      "grid-center" auto
+      "grid-footer" auto / minmax(0, 1fr);
+    padding: 0 2rem;
+  }
+
+  .sidebar.left,
+  .sidebar.right {
+    display: none;
+  }
+
+  .page-header {
+    margin-top: 3.5rem;
+  }
+
+  .center,
+  .center > article {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .article-title,
+  .content-meta {
+    display: none;
+  }
+
+  article {
+    margin: 0 auto;
+  }
+
+  footer {
+    max-width: 100%;
+  }
+}
+
+@media all and ($mobile) {
+  body[data-slug="index"] .page > #quartz-body {
+    padding: 0 1rem;
+  }
+}
