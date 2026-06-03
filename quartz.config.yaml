@@ -211,6 +211,11 @@ plugins:
     enabled: true
     options: {}
     order: 45
+  - source: ./plugins/ui-fixes
+    enabled: true
+    layout:
+      position: afterBody
+      priority: 1000
 layout:
   groups:
     toolbar:

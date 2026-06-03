@@ -1,0 +1,25 @@
+{
+  "name": "ui-fixes",
+  "version": "0.1.0",
+  "description": "Small local UI fixes for the YYQ Quartz site.",
+  "type": "module",
+  "exports": {
+    "./components": "./dist/components/index.js",
+    "./package.json": "./package.json"
+  },
+  "quartz": {
+    "name": "ui-fixes",
+    "displayName": "UI Fixes",
+    "category": "component",
+    "version": "0.1.0",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "components": {
+      "UiFixes": {
+        "displayName": "UI Fixes",
+        "defaultPosition": "afterBody",
+        "defaultPriority": 1000
+      }
+    }
+  }
+}
