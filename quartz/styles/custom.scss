@@ -1,3 +1,43 @@
 @use "./variables.scss" as *;
 
 // put your custom CSS here!
+
+@media all and ($desktop) {
+  .page > #quartz-body .sidebar.left {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .page > #quartz-body .sidebar.left > .explorer,
+  .page > #quartz-body .sidebar.left > .recent-notes {
+    flex-shrink: 0;
+  }
+}
+
+.toc {
+  min-width: 0;
+}
+
+.toc button.toc-header {
+  width: 100%;
+  min-width: 0;
+
+  h3 {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fold {
+    flex: 0 0 auto;
+  }
+}
+
+.toc ul.toc-content.overflow > li > a {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

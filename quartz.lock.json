@@ -193,6 +193,12 @@
       "commit": "82f8a6d5e774de5e075978651b6ca81f2ccb6812",
       "installedAt": "2026-05-24T15:36:17.446Z"
     },
+    "ui-fixes": {
+      "source": "./plugins/ui-fixes",
+      "resolved": "./plugins/ui-fixes",
+      "commit": "local",
+      "installedAt": "2026-06-03T00:00:00.000Z"
+    },
     "unlisted-pages": {
       "source": "github:quartz-community/unlisted-pages",
       "resolved": "https://github.com/quartz-community/unlisted-pages.git",
