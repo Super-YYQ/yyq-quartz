@@ -29,17 +29,17 @@ aliases:
 | 私人仓库分支 | `main` |
 | Quartz 本地目录 | `<QUARTZ_SITE_DIR>` |
 | Quartz GitHub 仓库 | `<GITHUB_USER>/<QUARTZ_REPO>` |
-| Quartz 生产分支 | `v4` |
+| Quartz 生产分支 | `v5` |
 | Cloudflare Pages 域名 | `https://<PROJECT_NAME>.pages.dev` |
-| Quartz 版本 | `4.5.2` |
-| Node.js 版本 | `22.16.0` |
+| Quartz 版本 | `5.0.0` |
+| Node.js 版本 | `>=22` |
 
 ```mermaid
 flowchart LR
     A["Obsidian 私人知识库"] -->|"Obsidian Git 自动提交与推送"| B["私人仓库 / main"]
     B -->|"GitHub Actions"| C["筛选 publish: true"]
-    C -->|"同步 content/ 并推送"| D["Quartz 公开仓库 / v4"]
-    D -->|"Cloudflare Pages Git 集成"| E["npx quartz build"]
+    C -->|"同步 content/ 并推送"| D["Quartz 公开仓库 / v5"]
+    D -->|"Cloudflare Pages Git 集成"| E["安装插件并构建"]
     E --> F["<PROJECT_NAME>.pages.dev"]
 ```
 
@@ -115,11 +115,11 @@ git push origin main
 工作流会执行以下步骤：
 
 1. 检出私人知识库到 `vault/`
-2. 检出 `<GITHUB_USER>/<QUARTZ_REPO>` 的 `v4` 分支到 `site/`
+2. 检出 `<GITHUB_USER>/<QUARTZ_REPO>` 的 `v5` 分支到 `site/`
 3. 运行 `site/scripts/sync-public-content.ps1 -VaultPath .\vault`
 4. 仅提交公开仓库中的 `content/`
 5. 如果公开内容没有变化，则正常退出，不创建空提交
-6. 如果有变化，则推送到 `<QUARTZ_REPO>/v4`
+6. 如果有变化，则推送到 `<QUARTZ_REPO>/v5`
 
 ### 4.1 配置 GitHub Token
 
@@ -182,25 +182,26 @@ cd <QUARTZ_SITE_DIR>
 公开仓库中的核心配置文件：
 
 ```text
-quartz.config.ts
+quartz.config.yaml
 ```
 
 当前关键配置：
 
-```ts
-configuration: {
-  pageTitle: "YYQ 的知识库",
-  locale: "zh-CN",
-  baseUrl: "<PROJECT_NAME>.pages.dev",
-  ignorePatterns: ["private", "templates", ".obsidian"],
-}
-
-plugins: {
-  filters: [Plugin.ExplicitPublish()],
-}
+```yaml
+configuration:
+  pageTitle: "<SITE_TITLE>"
+  locale: "zh-CN"
+  baseUrl: "<PROJECT_NAME>.pages.dev"
+  ignorePatterns:
+    - private
+    - templates
+    - .obsidian
+plugins:
+  - source: github:quartz-community/explicit-publish
+    enabled: true
 ```
 
-同步脚本与 `Plugin.ExplicitPublish()` 形成两层保护：
+同步脚本与 `explicit-publish` 插件形成两层保护：
 
 1. 同步脚本只解析文件开头的 frontmatter，并复制带有 `publish: true` 的 Markdown
 2. Quartz 构建时再次过滤未显式发布的页面
@@ -218,7 +219,8 @@ npm install
 
 ```powershell
 .\scripts\sync-public-content.ps1
-npx quartz build --serve
+node .\quartz\bootstrap-cli.mjs plugin install --from-config --clean
+node .\quartz\bootstrap-cli.mjs build --serve
 ```
 
 浏览器打开：
@@ -229,7 +231,7 @@ http://localhost:8080/
 
 ## 七、Cloudflare Pages 自动部署
 
-Cloudflare Pages 使用 Git 集成监听公开仓库。每次 `<QUARTZ_REPO>/v4` 收到新提交后，Cloudflare Pages 都会重新构建并发布网站。
+Cloudflare Pages 使用 Git 集成监听公开仓库。每次 `<QUARTZ_REPO>/v5` 收到新提交后，Cloudflare Pages 都会重新构建并发布网站。
 
 ### 7.1 Cloudflare Pages 配置
 
@@ -243,9 +245,9 @@ Cloudflare Pages 使用 Git 集成监听公开仓库。每次 `<QUARTZ_REPO>/v4`
 
 | 配置项 | 值 |
 | --- | --- |
-| Production branch | `v4` |
+| Production branch | `v5` |
 | Framework preset | `None` |
-| Build command | `npx quartz build` |
+| Build command | `node quartz/bootstrap-cli.mjs plugin install --from-config --clean && node quartz/bootstrap-cli.mjs build` |
 | Build output directory | `public` |
 | Root directory | 留空，使用仓库根目录 |
 
@@ -255,7 +257,7 @@ Cloudflare Pages 使用 Git 集成监听公开仓库。每次 `<QUARTZ_REPO>/v4`
 https://<PROJECT_NAME>.pages.dev
 ```
 
-如果后续绑定自定义域名，需要同步修改 `quartz.config.ts` 中的 `baseUrl`。
+如果后续绑定自定义域名，需要同步修改 `quartz.config.yaml` 中的 `baseUrl`。
 
 ### 7.2 为什么不需要 Cloudflare Token
 
@@ -266,8 +268,8 @@ https://<PROJECT_NAME>.pages.dev
 一次正常发布会出现两次 Git 推送：
 
 1. Obsidian Git 将私人笔记推送到 `<PRIVATE_VAULT_REPO>/main`
-2. 私人仓库的 GitHub Actions 将筛选后的内容推送到 `<QUARTZ_REPO>/v4`
-3. Cloudflare Pages 检测到公开库变化，运行 `npx quartz build`
+2. 私人仓库的 GitHub Actions 将筛选后的内容推送到 `<QUARTZ_REPO>/v5`
+3. Cloudflare Pages 检测到公开库变化，安装 Quartz 5 插件并运行构建
 4. Cloudflare Pages 将 `public/` 目录发布到网站
 
 查看进度的位置：
@@ -276,7 +278,7 @@ https://<PROJECT_NAME>.pages.dev
 | --- | --- |
 | 私人库是否推送成功 | `<GITHUB_USER>/<PRIVATE_VAULT_REPO>` 提交记录 |
 | 自动筛选是否成功 | 私人库 GitHub Actions：`Publish Quartz notes` |
-| 公开内容是否更新 | `<GITHUB_USER>/<QUARTZ_REPO>` 的 `v4` 分支 |
+| 公开内容是否更新 | `<GITHUB_USER>/<QUARTZ_REPO>` 的 `v5` 分支 |
 | 网站是否部署成功 | Cloudflare Pages 项目的 Deployments 页面 |
 
 ## 九、附件处理
@@ -294,7 +296,7 @@ https://<PROJECT_NAME>.pages.dev
 1. 笔记 frontmatter 是否包含 `publish: true`
 2. Obsidian Git 是否已经推送到 `<PRIVATE_VAULT_REPO>/main`
 3. 私人仓库的 `Publish Quartz notes` 工作流是否成功
-4. `<QUARTZ_REPO>/v4` 是否出现新的 `content: sync published notes` 提交
+4. `<QUARTZ_REPO>/v5` 是否出现新的 `content: sync published notes` 提交
 5. Cloudflare Pages 的最新 Deployment 是否成功
 
 ### 10.2 GitHub Actions 无法推送公开库
@@ -305,7 +307,7 @@ https://<PROJECT_NAME>.pages.dev
 - Token 是否过期
 - Token 是否仅授权给 `<GITHUB_USER>/<QUARTZ_REPO>`
 - Token 的 `Contents` 权限是否为 `Read and write`
-- 工作流检出的公开分支是否仍为 `v4`
+- 工作流检出的公开分支是否仍为 `v5`
 
 ### 10.3 Cloudflare Pages 构建失败
 
@@ -315,13 +317,14 @@ https://<PROJECT_NAME>.pages.dev
 cd <QUARTZ_SITE_DIR>
 npm install
 .\scripts\sync-public-content.ps1
-npx quartz build
+node .\quartz\bootstrap-cli.mjs plugin install --from-config --clean
+node .\quartz\bootstrap-cli.mjs build
 ```
 
 如果本地构建成功，再检查 Cloudflare Pages：
 
-- Production branch 是否为 `v4`
-- Build command 是否为 `npx quartz build`
+- Production branch 是否为 `v5`
+- Build command 是否为 `node quartz/bootstrap-cli.mjs plugin install --from-config --clean && node quartz/bootstrap-cli.mjs build`
 - Build output directory 是否为 `public`
 - Node.js 版本是否满足 Quartz 要求
 
@@ -341,7 +344,7 @@ npx quartz build
 | `<PRIVATE_VAULT_DIR>\.obsidian\plugins\obsidian-git\data.json` | Obsidian Git 自动备份设置 |
 | `<PRIVATE_VAULT_DIR>\.github\workflows\publish-quartz.yml` | 私人库推送后自动发布 |
 | `<QUARTZ_SITE_DIR>\scripts\sync-public-content.ps1` | 筛选并复制公开笔记 |
-| `<QUARTZ_SITE_DIR>\quartz.config.ts` | Quartz 网站配置与二次过滤 |
+| `<QUARTZ_SITE_DIR>\quartz.config.yaml` | Quartz 网站配置与二次过滤 |
 | `<QUARTZ_SITE_DIR>\content\` | 自动生成的公开笔记目录 |
 
 ## 十二、参考文档
