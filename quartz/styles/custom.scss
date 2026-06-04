@@ -91,6 +91,11 @@ html[saved-theme="dark"] body {
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.page > #quartz-body .sidebar.left::-webkit-scrollbar {
+  display: none;
 }
 
 .page > #quartz-body .sidebar.right {
@@ -188,21 +193,29 @@ html[saved-theme="dark"] body {
   color: var(--yyq-brand);
 }
 
-.explorer {
+.page > #quartz-body .sidebar.left .explorer {
   flex: 0 0 auto;
   overflow: visible;
 }
 
-.explorer-content {
+.page > #quartz-body .sidebar.left .explorer.collapsed {
+  flex: 0 0 auto;
+}
+
+.page > #quartz-body .sidebar.left .explorer.collapsed > .explorer-content {
+  display: none;
+}
+
+.page > #quartz-body .sidebar.left .explorer-content {
   overflow: visible;
 }
 
-.explorer-content ul.explorer-ul {
+.page > #quartz-body .sidebar.left .explorer-content ul.explorer-ul {
   overflow: visible;
   max-height: none;
 }
 
-.explorer-content .overflow-end {
+.page > #quartz-body .sidebar.left .explorer-content .overflow-end {
   display: none;
 }
 
@@ -233,6 +246,88 @@ html[saved-theme="dark"] body {
 .explorer-content ul li > a.active {
   color: var(--yyq-brand);
   font-weight: 800;
+}
+
+body[data-slug^="tags"] .page > #quartz-body {
+  grid-template-columns: minmax(15rem, 19rem) minmax(0, 1fr);
+  grid-template-areas:
+    "grid-sidebar-left grid-header"
+    "grid-sidebar-left grid-center"
+    "grid-sidebar-left grid-footer";
+}
+
+body[data-slug^="tags"] .sidebar.right {
+  display: none;
+}
+
+body[data-slug^="tags"] .popover-hint {
+  max-width: 820px;
+}
+
+body[data-slug^="tags"] .page-listing {
+  margin-top: 0.6rem;
+}
+
+body[data-slug^="tags"] .page-listing > p {
+  margin: 0.35rem 0 0.65rem;
+  color: var(--yyq-ink-2);
+  font-size: 0.88rem;
+}
+
+body[data-slug^="tags"] ul.section-ul {
+  margin: 0.75rem 0 1.35rem;
+  padding: 0;
+}
+
+body[data-slug^="tags"] li.section-li {
+  margin: 0;
+}
+
+body[data-slug^="tags"] li.section-li > .section {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 0.25rem 1.1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--yyq-line);
+}
+
+body[data-slug^="tags"] li.section-li > .section .meta {
+  grid-column: 1;
+  margin: 0;
+  color: var(--yyq-muted);
+  opacity: 1;
+  line-height: 1.45;
+}
+
+body[data-slug^="tags"] li.section-li > .section .desc {
+  grid-column: 2;
+  min-width: 0;
+}
+
+body[data-slug^="tags"] li.section-li > .section .desc h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+body[data-slug^="tags"] li.section-li > .section .desc h3 > a {
+  display: inline;
+  background: transparent;
+  color: var(--yyq-ink);
+}
+
+body[data-slug^="tags"] li.section-li > .section > .tags {
+  grid-column: 2;
+  justify-content: flex-start;
+  margin: 0.15rem 0 0;
+}
+
+body[data-slug^="tags"] .popover-hint > div > div {
+  padding: 0.15rem 0 0.35rem;
+}
+
+body[data-slug^="tags"] .popover-hint h2 {
+  margin: 1.2rem 0 0.35rem;
 }
 
 .toc {
