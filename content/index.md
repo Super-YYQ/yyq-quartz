@@ -4,12 +4,12 @@ publish: true
 ---
 
 <nav class="home-topbar" aria-label="首页导航">
-  <a class="home-topbar-brand" href="/">YYQ 的知识库</a>
+  <a class="home-topbar-brand" href="/" data-no-popover="true">YYQ 的知识库</a>
   <div class="home-topbar-links">
-    <a href="/Java/Java索引">Java</a>
-    <a href="/windows/Windows索引">Windows</a>
-    <a href="/blog/博客索引">博客</a>
-    <a href="/tags">标签</a>
+    <a href="/Java/Java索引" data-no-popover="true">Java</a>
+    <a href="/windows/Windows索引" data-no-popover="true">Windows</a>
+    <a href="/blog/博客索引" data-no-popover="true">博客</a>
+    <a href="/tags" data-no-popover="true">标签</a>
   </div>
   <div class="search home-topbar-search">
     <button class="search-button" aria-label="搜索" aria-expanded="false">
