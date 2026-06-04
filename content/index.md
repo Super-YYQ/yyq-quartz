@@ -11,6 +11,24 @@ publish: true
     <a href="/blog/博客索引">博客</a>
     <a href="/tags">标签</a>
   </div>
+  <div class="search home-topbar-search">
+    <button class="search-button" aria-label="搜索" aria-expanded="false">
+      <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7">
+        <title>Search</title>
+        <g class="search-path" fill="none">
+          <path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4" />
+          <circle cx="8" cy="8" r="7" />
+        </g>
+      </svg>
+      <p>搜索</p>
+    </button>
+    <div class="search-container">
+      <div class="search-space">
+        <input autocomplete="off" class="search-bar" name="search" type="text" aria-label="搜索些什么" placeholder="搜索些什么" />
+        <div class="search-layout" data-preview="true" data-field-priority='["title","content","tags"]'></div>
+      </div>
+    </div>
+  </div>
 </nav>
 
 <section class="yyq-home-hero">
