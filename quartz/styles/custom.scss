@@ -188,12 +188,46 @@ html[saved-theme="dark"] body {
   color: var(--yyq-brand);
 }
 
+.explorer {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.explorer-content {
+  overflow: visible;
+}
+
+.explorer-content ul.explorer-ul {
+  overflow: visible;
+  max-height: none;
+}
+
+.explorer-content .overflow-end {
+  display: none;
+}
+
 .explorer-content ul li > a,
 .folder-container div > a,
 .folder-container div > button span,
 .recent-notes a {
   color: var(--yyq-ink-2);
   font-size: 0.82rem;
+}
+
+.explorer-content ul li > a,
+.folder-container div > a,
+.folder-container div > button,
+.folder-container div > button span {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.folder-container > div {
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .explorer-content ul li > a.active {
@@ -416,6 +450,12 @@ body[data-slug="index"] .center {
   background: transparent;
 }
 
+body[data-slug="index"] .page-footer,
+body[data-slug="index"] footer {
+  max-width: none;
+  padding: 0 1.4rem 1.6rem;
+}
+
 body[data-slug="index"] .article-title,
 body[data-slug="index"] .content-meta,
 body[data-slug="index"] .tag-list,
@@ -425,7 +465,7 @@ body[data-slug="index"] .note-properties {
 
 .home-topbar {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr) minmax(11rem, 15rem);
   align-items: center;
   gap: 1.6rem;
   min-height: 4.25rem;
@@ -458,20 +498,46 @@ body[data-slug="index"] .note-properties {
 .home-topbar-links {
   display: flex;
   justify-content: center;
-  gap: 1.35rem;
+  gap: 1.55rem;
   font-size: 0.84rem;
   font-weight: 700;
 }
 
 .home-topbar-links a {
   color: rgba(255, 255, 255, 0.82);
-  padding: 1.45rem 0 1.25rem;
+  padding: 0.35rem 0;
   border-bottom: 2px solid transparent;
+  background: transparent;
 }
 
 .home-topbar-links a:hover {
   color: #fff;
   border-color: #62a9e9;
+}
+
+.home-topbar-search {
+  justify-self: end;
+  width: min(15rem, 100%);
+  min-width: 11rem;
+}
+
+.home-topbar-search > .search-button {
+  border-color: rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.home-topbar-search > .search-button p {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.home-topbar-search > .search-button svg .search-path {
+  stroke: rgba(255, 255, 255, 0.86);
+}
+
+.home-topbar-search > .search-button:hover {
+  border-color: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .yyq-home-hero {
@@ -794,6 +860,13 @@ body[data-slug="index"] .note-properties {
 
   .home-topbar-links a {
     padding: 0.2rem 0;
+  }
+
+  .home-topbar-search {
+    justify-self: stretch;
+    width: 100%;
+    min-width: 0;
+    margin-top: 0.25rem;
   }
 
   .yyq-home-hero {
