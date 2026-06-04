@@ -100,6 +100,11 @@ html[saved-theme="dark"] body {
 
 .page > #quartz-body .sidebar.right {
   border-left: 1px solid var(--yyq-line);
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  overflow: hidden;
 }
 
 [saved-theme="dark"] .page > #quartz-body .sidebar {
@@ -332,6 +337,10 @@ body[data-slug^="tags"] .popover-hint h2 {
 
 .toc {
   min-width: 0;
+  position: sticky;
+  top: 1.4rem;
+  max-height: calc(100vh - 2.8rem);
+  overflow: hidden;
 }
 
 .toc button.toc-header {
@@ -368,6 +377,18 @@ body[data-slug^="tags"] .popover-hint h2 {
   color: var(--yyq-ink);
   opacity: 1;
   font-weight: 800;
+}
+
+.toc ul.toc-content.overflow {
+  max-height: calc(100vh - 7.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 0.2rem;
+  scrollbar-width: none;
+}
+
+.toc ul.toc-content.overflow::-webkit-scrollbar {
+  display: none;
 }
 
 .center {

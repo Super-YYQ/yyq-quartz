@@ -36,11 +36,11 @@ aliases:
 
 ```mermaid
 flowchart LR
-    A["Obsidian 私人知识库"] -->|"Obsidian Git 自动提交与推送"| B["私人仓库 / main"]
-    B -->|"GitHub Actions"| C["筛选 publish: true"]
-    C -->|"同步 content/ 并推送"| D["Quartz 公开仓库 / v5"]
-    D -->|"Cloudflare Pages Git 集成"| E["安装插件并构建"]
-    E --> F["<PROJECT_NAME>.pages.dev"]
+    A[Obsidian 私人知识库] --> B[私人仓库 main]
+    B --> C[GitHub Actions 筛选公开笔记]
+    C --> D[Quartz 公开仓库 v5]
+    D --> E[Cloudflare Pages 构建]
+    E --> F[Pages 站点]
 ```
 
 ## 二、日常发布
