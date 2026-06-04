@@ -216,8 +216,49 @@ function createSearchShortcut() {
   })
 }
 
+function closeHomeNavGroups(except?: HTMLDetailsElement) {
+  document.querySelectorAll<HTMLDetailsElement>(".home-nav-group[open]").forEach((group) => {
+    if (group !== except) {
+      group.open = false
+    }
+  })
+}
+
+function createHomeDropdowns() {
+  window.addEventListener("click", (event) => {
+    const target = event.target
+    if (!(target instanceof Element)) return
+
+    const group = target.closest<HTMLDetailsElement>(".home-nav-group")
+    if (!group) {
+      closeHomeNavGroups()
+      return
+    }
+
+    if (target.closest("summary")) {
+      window.setTimeout(() => {
+        if (group.open) {
+          closeHomeNavGroups(group)
+        }
+      }, 0)
+      return
+    }
+
+    if (target.closest(".home-nav-dropdown a")) {
+      closeHomeNavGroups()
+    }
+  })
+
+  window.addEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      closeHomeNavGroups()
+    }
+  })
+}
+
 createRouter()
 createSearchShortcut()
+createHomeDropdowns()
 notifyNav(getFullSlug(window))
 
 if (!customElements.get("route-announcer")) {
