@@ -5,27 +5,59 @@ publish: true
 
 <nav class="home-topbar" aria-label="首页导航">
   <a class="home-topbar-brand" href="/" data-no-popover="true">YYQ 的知识库</a>
-  <div class="home-topbar-links">
-    <a href="/Java/Java索引" data-no-popover="true">Java</a>
-    <a href="/windows/Windows索引" data-no-popover="true">Windows</a>
-    <a href="/blog/博客索引" data-no-popover="true">博客</a>
-    <a href="/tags" data-no-popover="true">标签</a>
+  <div class="home-topbar-links" data-nav-config="home-categories">
+    <details class="home-nav-group">
+      <summary>学习</summary>
+      <div class="home-nav-dropdown">
+        <a href="/Java/Java索引" data-no-popover="true">Java 索引</a>
+        <a href="/windows/Windows索引" data-no-popover="true">Windows 索引</a>
+        <a href="/Java/Arthas诊断" data-no-popover="true">Arthas 诊断</a>
+      </div>
+    </details>
+    <details class="home-nav-group">
+      <summary>开发</summary>
+      <div class="home-nav-dropdown">
+        <a href="/windows/Codex Windows 微软商店安装包提取与手动更新" data-no-popover="true">Codex Windows</a>
+        <a href="/windows/Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置" data-no-popover="true">TUN 与 Codex</a>
+        <a href="/windows/Quartz 4 升级 Quartz 5 复盘" data-no-popover="true">Quartz 复盘</a>
+      </div>
+    </details>
+    <details class="home-nav-group">
+      <summary>工具</summary>
+      <div class="home-nav-dropdown">
+        <a href="/windows/电脑必备软件" data-no-popover="true">电脑必备软件</a>
+        <a href="/windows/keepass密码管理工具/KeePass密码管理" data-no-popover="true">KeePass 密码管理</a>
+        <a href="/windows/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages" data-no-popover="true">Obsidian 自动发布</a>
+      </div>
+    </details>
+    <details class="home-nav-group">
+      <summary>娱乐</summary>
+      <div class="home-nav-dropdown">
+        <a href="/blog/博客索引" data-no-popover="true">博客索引</a>
+        <a href="/blog/hexo博客/Hexo博客搭建" data-no-popover="true">Hexo 博客搭建</a>
+        <a href="/tags" data-no-popover="true">全部标签</a>
+      </div>
+    </details>
   </div>
-  <div class="search home-topbar-search">
-    <button class="search-button" aria-label="搜索" aria-expanded="false">
-      <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7">
-        <title>Search</title>
-        <g class="search-path" fill="none">
-          <path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4" />
-          <circle cx="8" cy="8" r="7" />
-        </g>
-      </svg>
-      <p>搜索</p>
-    </button>
-    <div class="search-container">
-      <div class="search-space">
-        <input autocomplete="off" class="search-bar" name="search" type="text" aria-label="搜索些什么" placeholder="搜索些什么" />
-        <div class="search-layout" data-preview="true" data-field-priority='["title","content","tags"]'></div>
+  <div class="home-topbar-actions">
+    <a class="home-github-link" href="https://github.com/Super-YYQ/yyq-quartz" data-no-popover="true" aria-label="GitHub">GitHub</a>
+    <div class="search home-topbar-search">
+      <button class="search-button" aria-label="搜索" aria-expanded="false">
+        <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7">
+          <title>Search</title>
+          <g class="search-path" fill="none">
+            <path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4" />
+            <circle cx="8" cy="8" r="7" />
+          </g>
+        </svg>
+        <p>搜索</p>
+        <span class="home-search-shortcut" aria-hidden="true">Ctrl K</span>
+      </button>
+      <div class="search-container">
+        <div class="search-space">
+          <input autocomplete="off" class="search-bar" name="search" type="text" aria-label="搜索些什么" placeholder="搜索些什么" />
+          <div class="search-layout" data-preview="true" data-field-priority='["title","content","tags"]'></div>
+        </div>
       </div>
     </div>
   </div>

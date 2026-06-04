@@ -194,7 +194,30 @@ function createRouter() {
   })()
 }
 
+function createSearchShortcut() {
+  window.addEventListener("keydown", (event: KeyboardEvent) => {
+    const key = event.key.toLowerCase()
+    const target = event.target
+    const isTyping =
+      target instanceof HTMLInputElement ||
+      target instanceof HTMLTextAreaElement ||
+      target instanceof HTMLSelectElement ||
+      (target instanceof HTMLElement && target.isContentEditable)
+
+    if (isTyping || key !== "k" || (!event.ctrlKey && !event.metaKey)) return
+
+    const button = document.querySelector<HTMLButtonElement>(
+      ".home-topbar-search > .search-button, .search > .search-button",
+    )
+    if (!button) return
+
+    event.preventDefault()
+    button.click()
+  })
+}
+
 createRouter()
+createSearchShortcut()
 notifyNav(getFullSlug(window))
 
 if (!customElements.get("route-announcer")) {
