@@ -22,6 +22,9 @@ aliases:
 
 优先使用“按软件代理”，只让 Codex、Claude 这类 AI 工具走本地代理端口，不要一上来就开启全局 TUN 或系统代理。
 
+> [!success] 2026-07-07 实测可用配置
+> Proxifier 使用 SOCKS5，规则同时包含 `Codex.exe` 和 `codex.exe`；`Localhost` 与代理核心保持 Direct；不使用右键菜单的临时 `Proxify Application`；系统代理和 TUN 均关闭。这样 Codex 启动、用量加载和对话响应都恢复正常速度。
+
 在当前这类 Windows + 公司网络 + 本地代理工具环境里，推荐优先使用 Proxifier：
 
 1. 首选 Proxifier：按进程接管 Codex、Claude，并让 DNS 通过代理解析。
@@ -110,8 +113,14 @@ Profile -> Proxification Rules -> Add
 ```text
 Name: Codex
 Applications: Codex.exe; codex.exe
+Target Hosts: Any
+Target Ports: Any
 Action: Proxy SOCKS5 127.0.0.1:7890
 ```
+
+两个进程都要包含：`Codex.exe` 是桌面界面，`codex.exe` 是后台 app-server。只代理前者时，窗口可能能打开，但“用量”、设置和对话请求会长时间等待。
+
+不要从 Proxifier 右键菜单临时执行 `Proxify Application`。这种手动接管会跳过普通规则，包括 `Localhost` 直连规则；应当始终通过 `Profile -> Proxification Rules` 配置。
 
 Claude Code 常见还需要把 Node 运行时纳入规则：
 
@@ -148,6 +157,18 @@ Profile -> Name Resolution
 ```
 
 这样让目标进程的主机名解析也通过代理完成。开启后再完全退出 Codex，并重新启动测试。
+
+公司网络需要保留内网 DNS 时，优先使用 `Resolve ONLY the following`，只让下列公网域名通过代理解析：
+
+```text
+*.chatgpt.com
+*.openai.com
+*.oaistatic.com
+*.oaistatsig.com
+*.oaiusercontent.com
+```
+
+这样不会把所有域名都交给代理端解析，也能减少对公司内网和 split DNS 的影响。
 
 如果使用 SOCKS5，尽量选择支持远端 DNS 的方式。某些命令行工具支持 `socks5h://127.0.0.1:7890`，其中 `h` 表示 hostname 交给代理端解析；不支持时再退回 `socks5://`。
 
@@ -205,12 +226,16 @@ codex.exe - chatgpt.com:443 open through proxy 127.0.0.1:7890 SOCKS5
 
 Proxifier 规则从上往下匹配，建议：
 
-1. 本地地址和局域网地址直连。
-2. 代理软件自身直连，例如 Clash、FlyingBird、v2rayN、Shadowsocks。
-3. Codex、Claude 等目标程序走代理。
-4. Default 保持 Direct，避免误伤公司软件。
+| 顺序 | 规则 | Applications | Targets | Action |
+| --- | --- | --- | --- | --- |
+| 1 | Localhost | Any | `localhost; 127.0.0.1; ::1` | Direct |
+| 2 | Proxy Core | 代理核心进程，例如 `FlyingBirdCore.exe` | Any | Direct |
+| 3 | Codex | `Codex.exe; codex.exe` | Any | SOCKS5 `127.0.0.1:7890` |
+| 4 | Default | Any | Any | Direct |
 
 不要把代理软件自身也放进代理规则，否则可能出现代理套代理、循环连接或节点频繁断开。
+
+使用 Proxifier 时，让本地代理核心保持监听即可，同时关闭代理软件的“系统代理”和 TUN/虚拟网卡。多层接管会形成重复代理，常见表现就是 Codex 启动慢、用量迟迟不显示。
 
 ## 方案二：启动脚本注入代理
 
@@ -288,6 +313,33 @@ start "" "C:\Path\To\App.exe" --proxy-server=http://127.0.0.1:7890
 
 这类问题按 [[Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置]] 处理：公司域名加入 Fake-IP 过滤，并增加 `DOMAIN-SUFFIX,<公司域名>,DIRECT` 规则。长期方案仍建议回到“只让 AI 工具显式走代理”。
 
+## Windows 沙箱与工作区依赖
+
+### `pwsh.exe` 商店别名导致沙箱启动失败
+
+如果 Codex 顶部持续出现“设置智能体沙盒以继续”，日志中又有类似错误：
+
+```text
+CreateProcessAsUserW failed: 1920
+```
+
+可能是 Microsoft Store 安装的 PowerShell 7 注册了 `pwsh.exe` 应用执行别名。沙箱用户无法通过这个别名启动真实程序，而系统自带的 Windows PowerShell 可以正常运行。
+
+处理步骤：
+
+1. 打开 Windows“设置 -> 应用 -> 高级应用设置 -> 应用执行别名”。
+2. 关闭 Microsoft PowerShell 对应的 `pwsh.exe` 别名。
+3. 完全退出并重新启动 Codex。
+4. 新会话应使用 `C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe`。
+
+修复后可让 Codex 执行普通命令，并确认进程身份包含 `codexsandboxoffline`，再测试工作区文件的创建、读取和删除。出现这个身份说明智能体沙箱已经生效。
+
+### Windows 10 显示“工作区依赖未安装”
+
+这和沙箱不是同一个功能。当前 Codex 的工作区依赖要求 Windows 11 22H2 或更高版本；Windows 10 即使反复点击“诊断”或“重新安装”，仍可能显示“未安装”或“无法重新安装”。
+
+在 Windows 10 上可以关闭“Codex 依赖项”开关并忽略该提示，代码编辑、命令执行和沙箱仍可正常使用。若确实需要随附的 Node.js、Python 工具链，再升级到受支持的 Windows 11 版本。
+
 ## 排查清单
 
 - [ ] 本地代理工具已连接节点
@@ -295,12 +347,16 @@ start "" "C:\Path\To\App.exe" --proxy-server=http://127.0.0.1:7890
 - [ ] Codex、Claude 已完全退出后重新启动
 - [ ] 单实例桌面应用没有复用旧进程
 - [ ] `HTTP_PROXY`、`HTTPS_PROXY`、`ALL_PROXY` 协议和端口正确
-- [ ] Proxifier 规则命中了正确的 `.exe`
+- [ ] Proxifier 的 Codex 规则同时包含 `Codex.exe` 和 `codex.exe`
+- [ ] 使用常规 Proxification Rules，而不是临时 `Proxify Application`
+- [ ] `Localhost` 和代理核心规则位于 Codex 规则上方并保持 Direct
 - [ ] DNS 解析已经通过代理或远端解析
 - [ ] Claude 提示网络被重定向时，已关闭自动 DNS 检测并开启通过代理解析主机名
 - [ ] 代理软件自身没有被 Proxifier 代理
+- [ ] 使用 Proxifier 时已关闭系统代理和 TUN/虚拟网卡
 - [ ] Default 规则没有误改成全局代理
 - [ ] 公司内网域名没有被 TUN Fake-IP 污染
+- [ ] 沙箱报错 `1920` 时已关闭商店 PowerShell 的 `pwsh.exe` 应用执行别名
 
 ## 常见问题
 
@@ -342,6 +398,17 @@ Windows 下 `~/.claude` 等价于：
 %USERPROFILE%\.claude\settings.json
 ```
 
+## 发布与隐私
+
+本文设置了 `publish: true`，只记录可公开复用的配置。发布前不要写入以下内容：
+
+- 公司真实域名、内网 IP、VPN 路由和安全策略。
+- Windows 用户名、计算机名、仓库绝对路径和日志中的身份信息。
+- 代理订阅、节点地址、认证用户名或密码。
+- Proxifier 导出的完整配置文件；其中可能包含代理凭据。
+
+涉及实际公司网络的排障过程应放在没有 `publish: true` 的私有笔记中，公开文档只使用 `<公司域名>` 等占位符。
+
 ## 参考链接
 
 - [Linux.do：Codex / 代理相关讨论 1](https://linux.do/t/topic/2311522/20)
@@ -351,6 +418,9 @@ Windows 下 `~/.claude` 等价于：
 - [Proxifier-CN 中文本地化包](https://github.com/1564307973/Proxifier-CN)
 - [Claude Code settings](https://code.claude.com/docs/en/settings)
 - [Codex Windows 官方文档](https://developers.openai.com/codex/windows)
+- [Proxifier：Proxification Rules](https://www.proxifier.com/docs/win-v4/rules.html)
+- [Proxifier：Name Resolution](https://www.proxifier.com/docs/win-v4/dns.html)
+- [Proxifier：Proxy Settings](https://www.proxifier.com/docs/win-v4/proxy.html)
 
 > [!note]
 > 整理时当前网络无法直接打开 Linux.do 两个页面；其中 Proxifier 代理 Codex 的 DNS 设置已根据截图补充。其余可访问资料主要来自 LZHPO、GitHub Wiki、Proxifier-CN、Claude Code 官方设置页和本知识库既有 Codex/TUN 排障记录。
