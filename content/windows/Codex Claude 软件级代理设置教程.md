@@ -16,7 +16,7 @@ aliases:
 
 # Codex Claude 软件级代理设置教程
 
-相关笔记：[[Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置]]、[[Codex Windows 微软商店安装包提取与手动更新]]、[[电脑必备软件]]
+相关笔记：[[ChatGPT Windows 升级后 Proxifier 网络异常排查]]、[[Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置]]、[[Codex Windows 微软商店安装包提取与手动更新]]、[[电脑必备软件]]
 
 ## 结论
 
@@ -171,6 +171,9 @@ Profile -> Name Resolution
 这样不会把所有域名都交给代理端解析，也能减少对公司内网和 split DNS 的影响。
 
 如果使用 SOCKS5，尽量选择支持远端 DNS 的方式。某些命令行工具支持 `socks5h://127.0.0.1:7890`，其中 `h` 表示 hostname 交给代理端解析；不支持时再退回 `socks5://`。
+
+> [!tip] ChatGPT 新版专项排障
+> 如果升级后同时出现启动慢、语言回退、用量加载失败或审批模式缺失，请参阅 [[ChatGPT Windows 升级后 Proxifier 网络异常排查]]。除了 `*.chatgpt.com`，还要单独覆盖裸域名 `chatgpt.com`，并检查“DNS 和 IP 泄漏防护模式”。
 
 ### 实测案例：Codex 可以，Claude 仍打不开
 
