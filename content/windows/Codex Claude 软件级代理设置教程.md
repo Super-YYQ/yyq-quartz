@@ -12,11 +12,13 @@ aliases:
   - Codex Claude 代理配置
   - AI 工具软件级代理
   - 进程级代理配置
+type: tutorial
+status: stable
 ---
 
 # Codex Claude 软件级代理设置教程
 
-相关笔记：[[ChatGPT Windows 升级后 Proxifier 网络异常排查]]、[[Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置]]、[[Codex Windows 微软商店安装包提取与手动更新]]、[[电脑必备软件]]
+相关笔记：[[ChatGPT Windows 升级后 Proxifier 网络异常排查]]、[[Codex Windows 微软商店安装包提取与手动更新]]、[[电脑必备软件]]
 
 ## 结论
 
@@ -314,7 +316,7 @@ start "" "C:\Path\To\App.exe" --proxy-server=http://127.0.0.1:7890
 - Fake-IP 可能把公司域名解析到 `198.18.0.0/16`。
 - 系统代理排除列表只能影响应用层代理，不能完全约束 TUN。
 
-这类问题按 [[Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置]] 处理：公司域名加入 Fake-IP 过滤，并增加 `DOMAIN-SUFFIX,<公司域名>,DIRECT` 规则。长期方案仍建议回到“只让 AI 工具显式走代理”。
+公司网络、VPN、内网 DNS 与 TUN 共存属于环境相关场景，需要根据实际企业网络策略单独处理，本文不公开展开。长期方案仍建议回到“只让 AI 工具显式走代理”。
 
 ## Windows 沙箱与工作区依赖
 

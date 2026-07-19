@@ -11,6 +11,8 @@ tags:
 aliases:
   - Obsidian 自动发布 Quartz
   - Quartz Cloudflare Pages 自动部署
+type: knowledge
+status: stable
 ---
 
 # Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages

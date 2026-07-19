@@ -11,6 +11,8 @@ tags:
 aliases:
   - Quartz 5 升级复盘
   - Quartz v4 升级 v5
+type: tutorial
+status: stable
 ---
 
 # Quartz 4 升级 Quartz 5 复盘

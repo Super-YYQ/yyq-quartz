@@ -8,6 +8,8 @@ tags:
   - 诊断工具
 aliases:
   - arthas
+type: knowledge
+status: stable
 ---
 
 # Arthas诊断

@@ -6,6 +6,8 @@ tags:
   - index
 aliases:
   - Windows
+type: moc
+status: stable
 ---
 
 # Windows 索引

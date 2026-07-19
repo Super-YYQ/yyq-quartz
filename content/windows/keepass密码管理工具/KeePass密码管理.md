@@ -10,6 +10,8 @@ tags:
 aliases:
   - KeePass
   - 密码管理器
+type: knowledge
+status: stable
 ---
 
 # KeePass 密码管理

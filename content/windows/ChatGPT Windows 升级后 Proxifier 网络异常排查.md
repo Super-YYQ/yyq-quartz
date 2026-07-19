@@ -12,6 +12,8 @@ tags:
 aliases:
   - ChatGPT Proxifier 排障
   - Codex 升级 ChatGPT 网络问题
+type: tutorial
+status: stable
 ---
 
 # ChatGPT Windows 升级后 Proxifier 网络异常排查
