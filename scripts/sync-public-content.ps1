@@ -25,7 +25,9 @@ else {
 }
 
 # Paths that must never be published even if a note is mistakenly marked publish:true.
-$excludedPathPattern = '(^|[\\/])(\.|_private|_assets-private|tmp|docs|scripts|preview|90-AI|80-Templates|00-Inbox|10-Sources)([\\/]|$)'
+# Use \.[^\\/]+ so dot-directories like .planning / .obsidian / .claude are excluded
+# (a bare \. only matched a single "." path segment and missed ".planning").
+$excludedPathPattern = '(^|[\\/])(\.[^\\/]+|_private|_assets-private|tmp|docs|scripts|preview|90-AI|80-Templates|00-Inbox|10-Sources)([\\/]|$)'
 
 $publishedNotes = Get-ChildItem -LiteralPath $vaultRoot -Recurse -File -Filter "*.md" |
     Where-Object {
