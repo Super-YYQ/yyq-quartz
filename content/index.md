@@ -19,8 +19,8 @@ publish: true
       <div class="home-nav-dropdown">
         <a href="/windows/Codex Claude 软件级代理设置教程" data-no-popover="true">AI 工具代理</a>
         <a href="/windows/Codex Windows 微软商店安装包提取与手动更新" data-no-popover="true">Codex Windows</a>
-        <a href="/windows/Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置" data-no-popover="true">TUN 与 Codex</a>
         <a href="/windows/Quartz 4 升级 Quartz 5 复盘" data-no-popover="true">Quartz 复盘</a>
+        <a href="/windows/ChatGPT Windows 升级后 Proxifier 网络异常排查" data-no-popover="true">ChatGPT 排障</a>
       </div>
     </details>
     <details class="home-nav-group">

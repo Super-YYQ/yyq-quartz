@@ -1,5 +1,6 @@
 param(
-    [string]$VaultPath = (Join-Path $PSScriptRoot "..\..\obsidian-yyq")
+    # Default points at sibling private vault checkout when both repos share a parent folder.
+    [string]$VaultPath = (Join-Path $PSScriptRoot "..\..\obsidian-private")
 )
 
 $ErrorActionPreference = "Stop"
@@ -23,6 +24,9 @@ else {
     New-Item -ItemType Directory -Path $contentRoot | Out-Null
 }
 
+# Paths that must never be published even if a note is mistakenly marked publish:true.
+$excludedPathPattern = '(^|[\\/])(\.|_private|_assets-private|tmp|docs|scripts|preview|90-AI|80-Templates|00-Inbox|10-Sources)([\\/]|$)'
+
 $publishedNotes = Get-ChildItem -LiteralPath $vaultRoot -Recurse -File -Filter "*.md" |
     Where-Object {
         $relativePath = [System.IO.Path]::GetRelativePath($vaultRoot, $_.FullName)
@@ -33,8 +37,8 @@ $publishedNotes = Get-ChildItem -LiteralPath $vaultRoot -Recurse -File -Filter "
             [System.Text.RegularExpressions.RegexOptions]::Singleline
         )
 
-        $relativePath -notmatch '(^|[\\/])\.' -and
-        $relativePath -notin @("task_plan.md", "findings.md", "progress.md") -and
+        $relativePath -notmatch $excludedPathPattern -and
+        $relativePath -notin @("task_plan.md", "findings.md", "progress.md", "AGENTS.md", "CLAUDE.md", "AI-RULES.md", "README.md") -and
         $frontmatter.Success -and
         $frontmatter.Groups["content"].Value -match '(?m)^publish:\s*true\s*$'
     }
@@ -72,8 +76,8 @@ publish: true
       <div class="home-nav-dropdown">
         <a href="/windows/Codex Claude 软件级代理设置教程" data-no-popover="true">AI 工具代理</a>
         <a href="/windows/Codex Windows 微软商店安装包提取与手动更新" data-no-popover="true">Codex Windows</a>
-        <a href="/windows/Windows 公司网络下 FlyingBird TUN 与 Codex 共存配置" data-no-popover="true">TUN 与 Codex</a>
         <a href="/windows/Quartz 4 升级 Quartz 5 复盘" data-no-popover="true">Quartz 复盘</a>
+        <a href="/windows/ChatGPT Windows 升级后 Proxifier 网络异常排查" data-no-popover="true">ChatGPT 排障</a>
       </div>
     </details>
     <details class="home-nav-group">

@@ -1,13 +1,43 @@
+# OS / editor
 .DS_Store
-.gitignore
+Thumbs.db
+desktop.ini
+
+# Dependencies and build
 node_modules
 public
 prof
 tsconfig.tsbuildinfo
-.obsidian
 .quartz-cache
-private/
-.replit
-replit.nix
 .quartz/
 quartz/cli/tui/dist/
+
+# Obsidian (this repo is the public site, not the vault)
+.obsidian
+
+# Local private scratch if ever present
+private/
+_private/
+_assets-private/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+credentials*
+secrets*
+
+# AI agent local sessions
+.claude/
+.codex/
+.claudian/
+.pi/
+.agents/
+
+# Upstream/dev host leftovers
+.replit
+replit.nix
