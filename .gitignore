@@ -37,6 +37,7 @@ secrets*
 .claudian/
 .pi/
 .agents/
+.superpowers/
 
 # Upstream/dev host leftovers
 .replit
