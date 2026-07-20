@@ -10,7 +10,7 @@ tags:
 aliases:
   - Codex Windows 手动更新
   - Codex 微软商店安装包提取
-type: knowledge
+type: tutorial
 status: stable
 ---
 

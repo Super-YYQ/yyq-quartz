@@ -9,33 +9,35 @@ publish: true
     <details class="home-nav-group">
       <summary>学习</summary>
       <div class="home-nav-dropdown">
-        <a href="/Java/Java索引" data-no-popover="true">Java 索引</a>
-        <a href="/windows/Windows索引" data-no-popover="true">Windows 索引</a>
-        <a href="/Java/Arthas诊断" data-no-popover="true">Arthas 诊断</a>
+        <a href="/30-MOC/Java索引" data-no-popover="true">Java 索引</a>
+        <a href="/30-MOC/Windows索引" data-no-popover="true">Windows 索引</a>
+        <a href="/20-Knowledge/Java/Arthas诊断" data-no-popover="true">Arthas 诊断</a>
       </div>
     </details>
     <details class="home-nav-group">
       <summary>开发</summary>
       <div class="home-nav-dropdown">
-        <a href="/windows/Codex Claude 软件级代理设置教程" data-no-popover="true">AI 工具代理</a>
-        <a href="/windows/Codex Windows 微软商店安装包提取与手动更新" data-no-popover="true">Codex Windows</a>
-        <a href="/windows/Quartz 4 升级 Quartz 5 复盘" data-no-popover="true">Quartz 复盘</a>
-        <a href="/windows/ChatGPT Windows 升级后 Proxifier 网络异常排查" data-no-popover="true">ChatGPT 排障</a>
+        <a href="/50-Tutorials/Windows/Codex Claude 软件级代理设置教程" data-no-popover="true">AI 工具代理</a>
+        <a href="/50-Tutorials/Windows/Codex Windows 微软商店安装包提取与手动更新" data-no-popover="true">Codex Windows</a>
+        <a href="/50-Tutorials/Obsidian/Quartz 4 升级 Quartz 5 复盘" data-no-popover="true">Quartz 复盘</a>
+        <a href="/50-Tutorials/Windows/ChatGPT Windows 升级后 Proxifier 网络异常排查" data-no-popover="true">ChatGPT 排障</a>
       </div>
     </details>
     <details class="home-nav-group">
       <summary>工具</summary>
       <div class="home-nav-dropdown">
-        <a href="/windows/电脑必备软件" data-no-popover="true">电脑必备软件</a>
-        <a href="/windows/keepass密码管理工具/KeePass密码管理" data-no-popover="true">KeePass 密码管理</a>
-        <a href="/windows/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages" data-no-popover="true">Obsidian 自动发布</a>
+        <a href="/20-Knowledge/Windows/电脑必备软件" data-no-popover="true">电脑必备软件</a>
+        <a href="/20-Knowledge/Windows/KeePass/KeePass密码管理" data-no-popover="true">KeePass 密码管理</a>
+        <a href="/50-Tutorials/Obsidian/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages" data-no-popover="true">Obsidian 自动发布</a>
+        <a href="/50-Tutorials/Windows/Tampermonkey多电脑同步指南" data-no-popover="true">Tampermonkey 同步</a>
+        <a href="/50-Tutorials/网络与域名/DNSHE免费域名注册与Cloudflare托管教程" data-no-popover="true">DNSHE 与 Cloudflare</a>
       </div>
     </details>
     <details class="home-nav-group">
       <summary>娱乐</summary>
       <div class="home-nav-dropdown">
-        <a href="/blog/博客索引" data-no-popover="true">博客索引</a>
-        <a href="/blog/hexo博客/Hexo博客搭建" data-no-popover="true">Hexo 博客搭建</a>
+        <a href="/30-MOC/博客索引" data-no-popover="true">博客索引</a>
+        <a href="/50-Tutorials/博客/Hexo博客搭建" data-no-popover="true">Hexo 博客搭建</a>
         <a href="/tags" data-no-popover="true">全部标签</a>
       </div>
     </details>
@@ -72,34 +74,34 @@ publish: true
       <span>持续记录</span>
       <span>公开分享</span>
       <span>知识链接</span>
-      <span>已发布 12 篇</span>
+      <span>已发布 14 篇</span>
     </div>
   </div>
 </section>
 
 <section class="yyq-category-grid" aria-label="分类索引">
-  <a class="yyq-category-card yyq-java" href="/Java/Java索引" data-no-popover="true">
+  <a class="yyq-category-card yyq-java" href="/30-MOC/Java索引" data-no-popover="true">
     <span class="yyq-category-icon">♨</span>
     <strong>Java</strong>
     <small>基础、并发、JVM、源码</small>
     <p>诊断工具、开发实践、框架源码解析与问题复盘。</p>
     <span class="yyq-card-arrow">→</span>
   </a>
-  <a class="yyq-category-card yyq-windows" href="/windows/Windows索引" data-no-popover="true">
+  <a class="yyq-category-card yyq-windows" href="/30-MOC/Windows索引" data-no-popover="true">
     <span class="yyq-category-icon">▦</span>
     <strong>Windows</strong>
     <small>系统、终端、效率工具</small>
     <p>软件清单、系统配置、终端美化与故障排查。</p>
     <span class="yyq-card-arrow">→</span>
   </a>
-  <a class="yyq-category-card yyq-blog" href="/blog/博客索引" data-no-popover="true">
+  <a class="yyq-category-card yyq-blog" href="/30-MOC/博客索引" data-no-popover="true">
     <span class="yyq-category-icon">✎</span>
     <strong>博客</strong>
     <small>搭建、维护、记录</small>
     <p>博客搭建维护、学习记录与阶段性思考沉淀。</p>
     <span class="yyq-card-arrow">→</span>
   </a>
-  <a class="yyq-category-card yyq-tools" href="/windows/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages" data-no-popover="true">
+  <a class="yyq-category-card yyq-tools" href="/50-Tutorials/Obsidian/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages" data-no-popover="true">
     <span class="yyq-category-icon">✚</span>
     <strong>工具运维</strong>
     <small>自动化、部署、知识库</small>
@@ -113,21 +115,35 @@ publish: true
     <h2>最近更新</h2>
     <a href="/tags" data-no-popover="true">查看全部 →</a>
   </div>
-  <a class="yyq-update-row" href="/windows/Codex Claude 软件级代理设置教程" data-no-popover="true">
+  <a class="yyq-update-row" href="/50-Tutorials/网络与域名/DNSHE免费域名注册与Cloudflare托管教程" data-no-popover="true">
+    <span>
+      <strong>DNSHE 免费域名注册与 Cloudflare 托管教程</strong>
+      <em>从免费域名注册、NS 托管到 Pages 绑定与续期维护。</em>
+    </span>
+    <small>Cloudflare</small>
+  </a>
+  <a class="yyq-update-row" href="/50-Tutorials/Windows/Tampermonkey多电脑同步指南" data-no-popover="true">
+    <span>
+      <strong>Tampermonkey 多电脑同步指南</strong>
+      <em>整理多设备脚本同步、首次备份与冲突恢复流程。</em>
+    </span>
+    <small>工具</small>
+  </a>
+  <a class="yyq-update-row" href="/50-Tutorials/Windows/Codex Claude 软件级代理设置教程" data-no-popover="true">
     <span>
       <strong>Codex Claude 软件级代理设置教程</strong>
       <em>整理 Proxifier、名称解析、启动脚本和 TUN 兜底的 AI 工具代理方案。</em>
     </span>
     <small>代理</small>
   </a>
-  <a class="yyq-update-row" href="/windows/Quartz 4 升级 Quartz 5 复盘" data-no-popover="true">
+  <a class="yyq-update-row" href="/50-Tutorials/Obsidian/Quartz 4 升级 Quartz 5 复盘" data-no-popover="true">
     <span>
       <strong>Quartz 4 升级 Quartz 5 复盘</strong>
       <em>记录从 Quartz 4 升级到 Quartz 5 的配置、构建与部署过程。</em>
     </span>
     <small>Quartz 5</small>
   </a>
-  <a class="yyq-update-row" href="/windows/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages" data-no-popover="true">
+  <a class="yyq-update-row" href="/50-Tutorials/Obsidian/Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages" data-no-popover="true">
     <span>
       <strong>Obsidian 自动发布 Quartz</strong>
       <em>通过自动化流程将 Obsidian 笔记发布到 Quartz 公开站点。</em>

@@ -8,7 +8,7 @@ tags:
   - 博客
 aliases:
   - Hexo博客
-type: knowledge
+type: tutorial
 status: stable
 ---
 

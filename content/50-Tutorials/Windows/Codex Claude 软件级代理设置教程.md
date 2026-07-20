@@ -35,14 +35,14 @@ status: stable
 
 ## 场景选择
 
-| 场景                                                            | 推荐方案                                                            |
-| --------------------------------------------------------------- | ------------------------------------------------------------------- |
-| Codex 加入 Proxifier 后仍响应慢、反复 reconnect                 | Proxifier + 关闭自动 DNS 检测 + 开启通过代理解析主机名              |
+| 场景 | 推荐方案 |
+| --- | --- |
+| Codex 加入 Proxifier 后仍响应慢、反复 reconnect | Proxifier + 关闭自动 DNS 检测 + 开启通过代理解析主机名 |
 | Codex 可用，但 Claude Desktop 显示 `Couldn't connect to Claude` | Proxifier 路径规则命中后，再检查 Name Resolution 是否仍使用本地 DNS |
-| 公司内网、VPN、Jira、Git 不能被全局代理影响                     | Proxifier 按进程代理                                                |
-| Claude Code 从终端启动，想临时测试                              | 当前终端设置 `HTTP_PROXY`、`HTTPS_PROXY`、`ALL_PROXY`               |
-| Electron 桌面应用支持启动参数                                   | 环境变量 + `--proxy-server`                                         |
-| Proxifier 和启动脚本都不稳定                                    | 临时开启 TUN，再单独处理公司域名直连规则                            |
+| 公司内网、VPN、Jira、Git 不能被全局代理影响 | Proxifier 按进程代理 |
+| Claude Code 从终端启动，想临时测试 | 当前终端设置 `HTTP_PROXY`、`HTTPS_PROXY`、`ALL_PROXY` |
+| Electron 桌面应用支持启动参数 | 环境变量 + `--proxy-server` |
+| Proxifier 和启动脚本都不稳定 | 临时开启 TUN，再单独处理公司域名直连规则 |
 
 ## 适用场景
 
@@ -209,11 +209,11 @@ codex.exe - chatgpt.com:443 open through proxy 127.0.0.1:7890 SOCKS5
 
 常见理解：
 
-| 选项                                             | 含义                                                 | 适合场景                                        |
-| ------------------------------------------------ | ---------------------------------------------------- | ----------------------------------------------- |
-| `Detect DNS setting automatically`               | 让 Proxifier 自动判断使用本地 DNS 还是代理侧解析     | 普通网络环境，问题少时可以保留                  |
-| `Resolve hostnames locally` / 本地解析           | 使用 Windows 当前 DNS 解析域名，再把 IP 交给代理连接 | 公司内网域名、需要 split DNS 的服务             |
-| `Resolve hostnames through proxy` / 通过代理解析 | 把域名交给代理服务器或代理链解析                     | 公网服务被本地 DNS 污染、劫持、重定向或解析失败 |
+| 选项 | 含义 | 适合场景 |
+| --- | --- | --- |
+| `Detect DNS setting automatically` | 让 Proxifier 自动判断使用本地 DNS 还是代理侧解析 | 普通网络环境，问题少时可以保留 |
+| `Resolve hostnames locally` / 本地解析 | 使用 Windows 当前 DNS 解析域名，再把 IP 交给代理连接 | 公司内网域名、需要 split DNS 的服务 |
+| `Resolve hostnames through proxy` / 通过代理解析 | 把域名交给代理服务器或代理链解析 | 公网服务被本地 DNS 污染、劫持、重定向或解析失败 |
 
 对 Codex、Claude 这类公网 AI 工具，如果已经按进程代理但仍打不开，优先尝试 `Resolve hostnames through proxy`。
 
@@ -231,12 +231,12 @@ codex.exe - chatgpt.com:443 open through proxy 127.0.0.1:7890 SOCKS5
 
 Proxifier 规则从上往下匹配，建议：
 
-| 顺序 | 规则       | Applications                            | Targets                     | Action                  |
-| ---- | ---------- | --------------------------------------- | --------------------------- | ----------------------- |
-| 1    | Localhost  | Any                                     | `localhost; 127.0.0.1; ::1` | Direct                  |
-| 2    | Proxy Core | 代理核心进程，例如 `FlyingBirdCore.exe` | Any                         | Direct                  |
-| 3    | Codex      | `Codex.exe; codex.exe`                  | Any                         | SOCKS5 `127.0.0.1:7890` |
-| 4    | Default    | Any                                     | Any                         | Direct                  |
+| 顺序 | 规则 | Applications | Targets | Action |
+| --- | --- | --- | --- | --- |
+| 1 | Localhost | Any | `localhost; 127.0.0.1; ::1` | Direct |
+| 2 | Proxy Core | 代理核心进程，例如 `FlyingBirdCore.exe` | Any | Direct |
+| 3 | Codex | `Codex.exe; codex.exe` | Any | SOCKS5 `127.0.0.1:7890` |
+| 4 | Default | Any | Any | Direct |
 
 不要把代理软件自身也放进代理规则，否则可能出现代理套代理、循环连接或节点频繁断开。
 
