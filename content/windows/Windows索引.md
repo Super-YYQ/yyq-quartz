@@ -6,6 +6,8 @@ tags:
   - index
 aliases:
   - Windows
+type: moc
+status: stable
 ---
 
 # Windows 索引
@@ -21,6 +23,7 @@ Windows 软件、效率工具与环境配置笔记。
 
 - [[Codex Windows 微软商店安装包提取与手动更新]]：Microsoft Store 安装包提取、更新与备份
 - [[Codex Claude 软件级代理设置教程]]：Codex、Claude、Proxifier 的进程级代理与 DNS 排障
+- [[ChatGPT Windows 升级后 Proxifier 网络异常排查]]：升级后启动慢、语言回退、用量失败与审批模式缺失的代理 DNS 复盘
 
 ## 知识库发布
 

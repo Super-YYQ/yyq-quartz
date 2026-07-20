@@ -11,6 +11,8 @@ tags:
 aliases:
   - Obsidian 自动发布 Quartz
   - Quartz Cloudflare Pages 自动部署
+type: knowledge
+status: stable
 ---
 
 # Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages
@@ -22,17 +24,17 @@ aliases:
 
 ## 一、当前架构
 
-| 项目 | 当前配置 |
-| --- | --- |
-| 私人知识库本地目录 | `<PRIVATE_VAULT_DIR>` |
-| 私人 GitHub 仓库 | `<GITHUB_USER>/<PRIVATE_VAULT_REPO>` |
-| 私人仓库分支 | `main` |
-| Quartz 本地目录 | `<QUARTZ_SITE_DIR>` |
-| Quartz GitHub 仓库 | `<GITHUB_USER>/<QUARTZ_REPO>` |
-| Quartz 生产分支 | `v5` |
-| Cloudflare Pages 域名 | `https://<PROJECT_NAME>.pages.dev` |
-| Quartz 版本 | `5.0.0` |
-| Node.js 版本 | `>=22` |
+| 项目                  | 当前配置                             |
+| --------------------- | ------------------------------------ |
+| 私人知识库本地目录    | `<PRIVATE_VAULT_DIR>`                |
+| 私人 GitHub 仓库      | `<GITHUB_USER>/<PRIVATE_VAULT_REPO>` |
+| 私人仓库分支          | `main`                               |
+| Quartz 本地目录       | `<QUARTZ_SITE_DIR>`                  |
+| Quartz GitHub 仓库    | `<GITHUB_USER>/<QUARTZ_REPO>`        |
+| Quartz 生产分支       | `v5`                                 |
+| Cloudflare Pages 域名 | `https://<PROJECT_NAME>.pages.dev`   |
+| Quartz 版本           | `5.0.0`                              |
+| Node.js 版本          | `>=22`                               |
 
 ```mermaid
 flowchart LR
@@ -81,15 +83,15 @@ publish: true
 
 当前行为：
 
-| 设置 | 值 | 作用 |
-| --- | --- | --- |
-| `autoBackupAfterFileChange` | `true` | 笔记发生变化后自动备份 |
-| `autoSaveInterval` | `5` | 约每 5 分钟自动提交 |
-| `autoPushInterval` | `5` | 约每 5 分钟自动推送 |
-| `autoPullInterval` | `10` | 约每 10 分钟自动拉取 |
-| `autoPullOnBoot` | `true` | 打开 Obsidian 时先拉取 |
-| `pullBeforePush` | `true` | 推送前先拉取，减少冲突 |
-| `commitMessage` | `vault backup: {{date}}` | 自动提交信息 |
+| 设置                        | 值                       | 作用                   |
+| --------------------------- | ------------------------ | ---------------------- |
+| `autoBackupAfterFileChange` | `true`                   | 笔记发生变化后自动备份 |
+| `autoSaveInterval`          | `5`                      | 约每 5 分钟自动提交    |
+| `autoPushInterval`          | `5`                      | 约每 5 分钟自动推送    |
+| `autoPullInterval`          | `10`                     | 约每 10 分钟自动拉取   |
+| `autoPullOnBoot`            | `true`                   | 打开 Obsidian 时先拉取 |
+| `pullBeforePush`            | `true`                   | 推送前先拉取，减少冲突 |
+| `commitMessage`             | `vault backup: {{date}}` | 自动提交信息           |
 
 需要立即发布时，也可以在私人知识库目录手动执行：
 
@@ -243,13 +245,13 @@ Cloudflare Pages 使用 Git 集成监听公开仓库。每次 `<QUARTZ_REPO>/v5`
 
 构建配置：
 
-| 配置项 | 值 |
-| --- | --- |
-| Production branch | `v5` |
-| Framework preset | `None` |
-| Build command | `node quartz/bootstrap-cli.mjs plugin install --from-config --clean && node quartz/bootstrap-cli.mjs build` |
-| Build output directory | `public` |
-| Root directory | 留空，使用仓库根目录 |
+| 配置项                 | 值                                                                                                          |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Production branch      | `v5`                                                                                                        |
+| Framework preset       | `None`                                                                                                      |
+| Build command          | `node quartz/bootstrap-cli.mjs plugin install --from-config --clean && node quartz/bootstrap-cli.mjs build` |
+| Build output directory | `public`                                                                                                    |
+| Root directory         | 留空，使用仓库根目录                                                                                        |
 
 部署成功后，Cloudflare Pages 会提供：
 
@@ -274,12 +276,12 @@ https://<PROJECT_NAME>.pages.dev
 
 查看进度的位置：
 
-| 阶段 | 检查位置 |
-| --- | --- |
+| 阶段               | 检查位置                                      |
+| ------------------ | --------------------------------------------- |
 | 私人库是否推送成功 | `<GITHUB_USER>/<PRIVATE_VAULT_REPO>` 提交记录 |
-| 自动筛选是否成功 | 私人库 GitHub Actions：`Publish Quartz notes` |
-| 公开内容是否更新 | `<GITHUB_USER>/<QUARTZ_REPO>` 的 `v5` 分支 |
-| 网站是否部署成功 | Cloudflare Pages 项目的 Deployments 页面 |
+| 自动筛选是否成功   | 私人库 GitHub Actions：`Publish Quartz notes` |
+| 公开内容是否更新   | `<GITHUB_USER>/<QUARTZ_REPO>` 的 `v5` 分支    |
+| 网站是否部署成功   | Cloudflare Pages 项目的 Deployments 页面      |
 
 ## 九、附件处理
 
@@ -339,13 +341,13 @@ node .\quartz\bootstrap-cli.mjs build
 
 ## 十一、关键文件清单
 
-| 文件 | 用途 |
-| --- | --- |
+| 文件                                                           | 用途                      |
+| -------------------------------------------------------------- | ------------------------- |
 | `<PRIVATE_VAULT_DIR>\.obsidian\plugins\obsidian-git\data.json` | Obsidian Git 自动备份设置 |
-| `<PRIVATE_VAULT_DIR>\.github\workflows\publish-quartz.yml` | 私人库推送后自动发布 |
-| `<QUARTZ_SITE_DIR>\scripts\sync-public-content.ps1` | 筛选并复制公开笔记 |
-| `<QUARTZ_SITE_DIR>\quartz.config.yaml` | Quartz 网站配置与二次过滤 |
-| `<QUARTZ_SITE_DIR>\content\` | 自动生成的公开笔记目录 |
+| `<PRIVATE_VAULT_DIR>\.github\workflows\publish-quartz.yml`     | 私人库推送后自动发布      |
+| `<QUARTZ_SITE_DIR>\scripts\sync-public-content.ps1`            | 筛选并复制公开笔记        |
+| `<QUARTZ_SITE_DIR>\quartz.config.yaml`                         | Quartz 网站配置与二次过滤 |
+| `<QUARTZ_SITE_DIR>\content\`                                   | 自动生成的公开笔记目录    |
 
 ## 十二、参考文档
 

@@ -19,7 +19,13 @@
     "test": "tsx --test",
     "profile": "0x -D prof ./quartz/bootstrap-cli.mjs build --concurrency=1",
     "install-plugins": "npx tsx ./quartz/plugins/loader/install-plugins.ts",
-    "prebuild": "npm run install-plugins"
+    "prebuild": "npm run install-plugins",
+    "validate:secrets": "node scripts/audit-secrets.mjs",
+    "validate:frontmatter": "node scripts/validate-frontmatter.mjs",
+    "validate:public": "node scripts/validate-public-content.mjs",
+    "validate:links": "node scripts/check-links.mjs",
+    "validate": "npm run validate:secrets && npm run validate:frontmatter && npm run validate:public && npm run validate:links",
+    "build:checked": "npm run validate && node ./quartz/bootstrap-cli.mjs plugin install --from-config --clean && node ./quartz/bootstrap-cli.mjs build"
   },
   "engines": {
     "npm": ">=10.9.2",

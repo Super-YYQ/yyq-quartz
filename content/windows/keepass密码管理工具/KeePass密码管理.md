@@ -10,6 +10,8 @@ tags:
 aliases:
   - KeePass
   - 密码管理器
+type: knowledge
+status: stable
 ---
 
 # KeePass 密码管理
@@ -41,17 +43,17 @@ aliases:
 
 ### 1.3 推荐插件清单
 
-| 插件 | 功能 | 来源 |
-|---|---|---|
-| KPEnhancedEntryView | 增强记录视图，一键查看/隐藏加密字段 | SourceForge |
-| KPEntryTemplates | 模板编辑器，快速创建标准化记录 | GitHub |
-| KeePassHttp | 与浏览器通信的 HTTP 桥接 | GitHub |
-| KeeTrayTOTP | 桌面端生成 TOTP 两步验证码 | GitHub |
-| WebAutoType | 根据网页自动填写标题/URL 快速添加记录 | SourceForge |
-| AutoTypeSearch | 自动输入无匹配时弹出搜索框 | SourceForge |
-| YetAnotherFaviconDownloader | 批量下载网站图标 | GitHub |
-| KPSourceForgeUpdateChecker | 检查 SourceForge 来源插件的更新 | SourceForge |
-| chromeIPass | Chrome 浏览器端自动填充（crx 安装） | Chrome Web Store |
+| 插件                        | 功能                                  | 来源             |
+| --------------------------- | ------------------------------------- | ---------------- |
+| KPEnhancedEntryView         | 增强记录视图，一键查看/隐藏加密字段   | SourceForge      |
+| KPEntryTemplates            | 模板编辑器，快速创建标准化记录        | GitHub           |
+| KeePassHttp                 | 与浏览器通信的 HTTP 桥接              | GitHub           |
+| KeeTrayTOTP                 | 桌面端生成 TOTP 两步验证码            | GitHub           |
+| WebAutoType                 | 根据网页自动填写标题/URL 快速添加记录 | SourceForge      |
+| AutoTypeSearch              | 自动输入无匹配时弹出搜索框            | SourceForge      |
+| YetAnotherFaviconDownloader | 批量下载网站图标                      | GitHub           |
+| KPSourceForgeUpdateChecker  | 检查 SourceForge 来源插件的更新       | SourceForge      |
+| chromeIPass                 | Chrome 浏览器端自动填充（crx 安装）   | Chrome Web Store |
 
 ## 二、数据库安全
 
@@ -82,6 +84,7 @@ aliases:
 KeePass 通过模拟按键实现自动输入。全局热键默认为 `Ctrl + Shift + A`（可能与 QQ 等软件冲突，可在 `工具` → `选项` → `集成` 中修改）。
 
 **使用方式**：
+
 - 点击目标输入框 → 按下全局自动输入热键
 - 或在 KeePass 主界面右键记录 → `执行自动输入`
 
@@ -92,6 +95,7 @@ KeePass 通过模拟按键实现自动输入。全局热键默认为 `Ctrl + Shi
 按下自动输入热键时，KeePass 根据当前活动窗口标题在数据库中匹配记录——记录的 **标题** 或 **网址** 包含在窗口标题内即匹配成功。
 
 **注意事项**：
+
 - 标题需包含网页关键词（不能随意填写），否则无法匹配
 - Chrome 中所有标签页标题都包含 "Google Chrome"，可能误匹配
 - **务必勾选** `工具` → `选项` → `高级` → `总是显示全局自动输入记录选取对话框`
@@ -166,6 +170,7 @@ KeePassHttp 作为插件运行在 KeePass 中，chromeIPass 作为 Chrome 扩展
 **网址前缀处理**：添加记录时网址设为 `baidu.com/` 而非 `www.baidu.com/`，这样子域名（`tieba.baidu.com`、`map.baidu.com`）均可匹配。使用 WebAutoType 插件可自动完成。
 
 **修改网站密码**：
+
 1. 在 chromeIPass 设置中取消勾选 `Automatically fill-in single credentials entry`
 2. 打开密码修改页面，按 `Ctrl + Shift + P` 填入原密码
 3. 在 KeePass 中修改密码
@@ -196,6 +201,7 @@ KeePassHttp 作为插件运行在 KeePass 中，chromeIPass 作为 Chrome 扩展
 **小米**：只能扫码不给密钥时，用任意二维码扫描软件获取密钥（URI 中 `secret=` 参数）。
 
 **Steam**（需手机 root）：
+
 1. 安装 Steam 手机客户端并设置好令牌
 2. 用 root 文件管理器打开 `/data/data/com.valvesoftware.android.steam.community/files/Steamguard`
 3. 复制密钥，`TOTP Format` 选择 `Steam`

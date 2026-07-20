@@ -12,6 +12,12 @@ configuration:
     - private
     - templates
     - .obsidian
+    - _private
+    - _assets-private
+    - tmp
+    - .planning
+    - scripts
+    - preview
   theme:
     fontOrigin: googleFonts
     cdnCaching: true

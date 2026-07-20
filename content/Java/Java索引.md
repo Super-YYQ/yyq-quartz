@@ -6,6 +6,8 @@ tags:
   - index
 aliases:
   - Java
+type: moc
+status: stable
 ---
 
 # Java 索引

@@ -8,6 +8,8 @@ tags:
   - 博客
 aliases:
   - Hexo博客
+type: knowledge
+status: stable
 ---
 
 # Hexo + GithubPage 博客搭建

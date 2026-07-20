@@ -11,6 +11,8 @@ tags:
 aliases:
   - Quartz 5 升级复盘
   - Quartz v4 升级 v5
+type: tutorial
+status: stable
 ---
 
 # Quartz 4 升级 Quartz 5 复盘
@@ -32,12 +34,12 @@ aliases:
 
 ## 二、Quartz 5 的关键变化
 
-| 项目 | Quartz 4 | Quartz 5 |
-| --- | --- | --- |
-| 配置文件 | `quartz.config.ts`、`quartz.layout.ts` | `quartz.config.yaml` |
-| 功能组织 | 内置 TypeScript 插件 | GitHub 插件化 |
-| 构建前置 | 通常直接 `npx quartz build` | 需要先安装/恢复 `.quartz/plugins` |
-| 显式发布 | TS 配置启用 | YAML 中启用 `explicit-publish` |
+| 项目     | Quartz 4                               | Quartz 5                          |
+| -------- | -------------------------------------- | --------------------------------- |
+| 配置文件 | `quartz.config.ts`、`quartz.layout.ts` | `quartz.config.yaml`              |
+| 功能组织 | 内置 TypeScript 插件                   | GitHub 插件化                     |
+| 构建前置 | 通常直接 `npx quartz build`            | 需要先安装/恢复 `.quartz/plugins` |
+| 显式发布 | TS 配置启用                            | YAML 中启用 `explicit-publish`    |
 
 > [!important]
 > Quartz 5 默认配置中 `explicit-publish` 不是开启状态。公开知识库必须显式启用。
@@ -239,12 +241,12 @@ Quartz 5 的主题主要有两条路线。
 
 推荐方案：
 
-| 方案 | 特点 | 适用场景 |
-| --- | --- | --- |
-| 清爽技术文档风 | 高可读、低装饰 | 技术笔记、工具手册 |
-| Obsidian 深色风 | 更接近 Obsidian | 想保持本地写作体验 |
-| 温暖数字花园风 | 暖白背景、博客感 | 随笔和知识沉淀 |
-| 卡片化现代风 | 圆角、间距、层次更明显 | 想让站点更精致 |
+| 方案            | 特点                   | 适用场景           |
+| --------------- | ---------------------- | ------------------ |
+| 清爽技术文档风  | 高可读、低装饰         | 技术笔记、工具手册 |
+| Obsidian 深色风 | 更接近 Obsidian        | 想保持本地写作体验 |
+| 温暖数字花园风  | 暖白背景、博客感       | 随笔和知识沉淀     |
+| 卡片化现代风    | 圆角、间距、层次更明显 | 想让站点更精致     |
 
 个人建议：先采用“清爽技术文档风 + 少量卡片化圆角”。
 
