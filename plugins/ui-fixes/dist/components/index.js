@@ -1,3 +1,13 @@
+const defaultDarkTheme = `
+(() => {
+  try {
+    if (localStorage.getItem("theme") == null) {
+      localStorage.setItem("theme", "dark")
+    }
+  } catch (_) {}
+})()
+`
+
 const explorerPatch = `
 (() => {
   const patchExplorer = () => {
@@ -29,6 +39,7 @@ const explorerPatch = `
 
 export const UiFixes = () => {
   const Component = () => null
+  Component.beforeDOMLoaded = defaultDarkTheme
   Component.afterDOMLoaded = explorerPatch
   return Component
 }
