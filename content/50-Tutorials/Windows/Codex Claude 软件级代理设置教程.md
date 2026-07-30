@@ -2,6 +2,7 @@
 title: Codex Claude 软件级代理设置教程
 publish: true
 date: 2026-06-24
+updated: 2026-07-30
 tags:
   - windows
   - 网络代理
@@ -31,7 +32,8 @@ status: stable
 
 1. 首选 Proxifier：按进程接管 Codex、Claude，并让 DNS 通过代理解析。
 2. 可选启动脚本：适合命令行工具，或 Electron 应用明确吃环境变量和 `--proxy-server` 的情况。
-3. 最后再用 TUN：只作为 Proxifier 和启动脚本都无法处理 DNS 或路由问题时的兜底方案。
+3. Git 单独按目标地址配置：只让 GitHub HTTPS 请求走代理，其他代码托管与网站保持直连。
+4. 最后再用 TUN：只作为 Proxifier 和启动脚本都无法处理 DNS 或路由问题时的兜底方案。
 
 ## 场景选择
 
@@ -42,6 +44,7 @@ status: stable
 | 公司内网、VPN、Jira、Git 不能被全局代理影响 | Proxifier 按进程代理 |
 | Claude Code 从终端启动，想临时测试 | 当前终端设置 `HTTP_PROXY`、`HTTPS_PROXY`、`ALL_PROXY` |
 | Electron 桌面应用支持启动参数 | 环境变量 + `--proxy-server` |
+| GitHub 需要代理，但 GitLab 或公司仓库必须直连 | Git URL 级代理配置 |
 | Proxifier 和启动脚本都不稳定 | 临时开启 TUN，再单独处理公司域名直连规则 |
 
 ## 适用场景
@@ -306,7 +309,47 @@ start "" "C:\Path\To\App.exe" --proxy-server=http://127.0.0.1:7890
 
 这类参数并不是每个软件都会公开承诺支持。判断标准很简单：启动后能登录、能对话、公司网络不受影响，就保留；无效就切换到 Proxifier。
 
-## 方案三：TUN 兜底
+## 方案三：Git 仅 GitHub 走代理
+
+如果 GitHub 需要代理，但 GitLab、公司仓库和其他网站必须直连，不要设置通用的 `http.proxy` 或 `https.proxy`。Git 支持按 URL 配置代理：
+
+```powershell
+git config --global http.https://github.com/.proxy http://127.0.0.1:7890
+```
+
+这里的 `7890` 应替换为本地代理工具实际提供的 HTTP 代理端口。该规则只匹配 `https://github.com/`；其他 HTTPS 地址不会继承它。
+
+如果此前配置过全局 Git 代理，先检查配置来源：
+
+```powershell
+git config --global --get-regexp '^(http|https)\..*proxy$'
+```
+
+确认通用代理不再需要后，将它们移除，再设置 GitHub 专用规则：
+
+```powershell
+git config --global --unset-all http.proxy
+git config --global --unset-all https.proxy
+git config --global http.https://github.com/.proxy http://127.0.0.1:7890
+```
+
+最后验证实际生效的代理项：
+
+```powershell
+git config --global --get-regexp '^(http|https)\..*proxy$'
+git config --get-urlmatch http.proxy https://github.com/
+```
+
+预期只看到类似下面的 URL 级规则：
+
+```ini
+http.https://github.com/.proxy=http://127.0.0.1:7890
+```
+
+> [!warning] HTTPS 与 SSH 是两套配置
+> 这项 Git 配置只影响 `https://github.com/...` 形式的远程地址，不影响 `git@github.com:...` 形式的 SSH 地址。SSH 需要在 `~/.ssh/config` 中单独设置代理，不要把两者混为一谈。
+
+## 方案四：TUN 兜底
 
 如果启动脚本和 Proxifier 都无法稳定处理 DNS，可以临时开启代理工具的 TUN 或虚拟网卡作为兜底。
 
