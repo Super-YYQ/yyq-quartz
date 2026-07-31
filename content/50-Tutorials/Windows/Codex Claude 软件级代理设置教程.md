@@ -2,17 +2,20 @@
 title: Codex Claude 软件级代理设置教程
 publish: true
 date: 2026-06-24
-updated: 2026-07-30
+updated: 2026-07-31
 tags:
   - windows
   - 网络代理
   - Codex
   - Claude
   - Proxifier
+  - Git
+  - GitHub CLI
 aliases:
   - Codex Claude 代理配置
   - AI 工具软件级代理
   - 进程级代理配置
+  - GitHub CLI 代理配置
 type: tutorial
 status: stable
 ---
@@ -32,7 +35,7 @@ status: stable
 
 1. 首选 Proxifier：按进程接管 Codex、Claude，并让 DNS 通过代理解析。
 2. 可选启动脚本：适合命令行工具，或 Electron 应用明确吃环境变量和 `--proxy-server` 的情况。
-3. Git 单独按目标地址配置：只让 GitHub HTTPS 请求走代理，其他代码托管与网站保持直连。
+3. Git 与 GitHub CLI 分开处理：Git 使用 URL 级规则，`gh` 用包装函数临时继承同一个代理值。
 4. 最后再用 TUN：只作为 Proxifier 和启动脚本都无法处理 DNS 或路由问题时的兜底方案。
 
 ## 场景选择
@@ -45,6 +48,7 @@ status: stable
 | Claude Code 从终端启动，想临时测试 | 当前终端设置 `HTTP_PROXY`、`HTTPS_PROXY`、`ALL_PROXY` |
 | Electron 桌面应用支持启动参数 | 环境变量 + `--proxy-server` |
 | GitHub 需要代理，但 GitLab 或公司仓库必须直连 | Git URL 级代理配置 |
+| Git 已能访问 GitHub，但 `gh auth login`、`gh api` 仍失败 | PowerShell 包装函数让 `gh` 临时复用 Git 代理 |
 | Proxifier 和启动脚本都不稳定 | 临时开启 TUN，再单独处理公司域名直连规则 |
 
 ## 适用场景
@@ -309,7 +313,7 @@ start "" "C:\Path\To\App.exe" --proxy-server=http://127.0.0.1:7890
 
 这类参数并不是每个软件都会公开承诺支持。判断标准很简单：启动后能登录、能对话、公司网络不受影响，就保留；无效就切换到 Proxifier。
 
-## 方案三：Git 仅 GitHub 走代理
+## 方案三：Git 和 GitHub CLI 仅 GitHub 走代理
 
 如果 GitHub 需要代理，但 GitLab、公司仓库和其他网站必须直连，不要设置通用的 `http.proxy` 或 `https.proxy`。Git 支持按 URL 配置代理：
 
@@ -348,6 +352,117 @@ http.https://github.com/.proxy=http://127.0.0.1:7890
 
 > [!warning] HTTPS 与 SSH 是两套配置
 > 这项 Git 配置只影响 `https://github.com/...` 形式的远程地址，不影响 `git@github.com:...` 形式的 SSH 地址。SSH 需要在 `~/.ssh/config` 中单独设置代理，不要把两者混为一谈。
+
+### Git 配了代理，为什么 `gh auth login` 仍打不开
+
+Git 和 GitHub CLI 是两个独立的网络客户端：
+
+| 操作 | 读取 Git 的 `http.*.proxy` |
+| --- | --- |
+| `git clone`、`git pull`、`git push` | 是 |
+| `gh auth login`、`gh api`、`gh issue`、`gh pr` | 否 |
+| `gh repo clone` | 实际执行 Git 的阶段读取；若还需发起 `gh` API 请求，该部分不读取 |
+
+即使 `.gitconfig` 使用不限定域名的通用 `http.proxy`，也只是 Git 的配置，不会自动变成 GitHub CLI、PowerShell 或 Windows 的全局代理。`gh auth login` 还需要先在命令行中访问 GitHub 获取设备登录信息；这一步失败时，浏览器可能不会正常打开。
+
+GitHub CLI 没有单独的 `proxy` 配置项。它的 HTTP 请求使用进程继承到的 `HTTP_PROXY`、`HTTPS_PROXY` 等环境变量。如果不希望永久修改用户环境变量，可以用 PowerShell 包装函数只在 `gh.exe` 运行期间注入代理。
+
+### 让 `gh` 自动复用 Git 的代理
+
+把下面函数加入 PowerShell 的 `$PROFILE`：
+
+```powershell
+function gh {
+    # 读取 Git 对 GitHub 最终匹配到的全局代理；
+    # 同时支持 http.https://github.com/.proxy 和通用 http.proxy。
+    $proxyUrl = & git.exe config --global --get-urlmatch `
+        http.proxy `
+        https://github.com/ 2>$null
+
+    if ([string]::IsNullOrWhiteSpace($proxyUrl)) {
+        Write-Warning 'Git 全局配置中没有找到 GitHub 代理，gh 将直接连接。'
+        & gh.exe @args
+        return
+    }
+
+    $proxyUrl = $proxyUrl.Trim()
+    $oldHttpProxy = $env:HTTP_PROXY
+    $oldHttpsProxy = $env:HTTPS_PROXY
+
+    try {
+        $env:HTTP_PROXY = $proxyUrl
+        $env:HTTPS_PROXY = $proxyUrl
+
+        & gh.exe @args
+    }
+    finally {
+        [Environment]::SetEnvironmentVariable(
+            'HTTP_PROXY',
+            $oldHttpProxy,
+            'Process'
+        )
+
+        [Environment]::SetEnvironmentVariable(
+            'HTTPS_PROXY',
+            $oldHttpsProxy,
+            'Process'
+        )
+    }
+}
+```
+
+这个函数有三个边界：
+
+- 用 `git.exe` 读取 Git 针对 `https://github.com/` 最终匹配到的代理，因此兼容 GitHub 专用规则和通用 `http.proxy`。
+- 使用 `--global`，只读取用户级 Git 配置，不让某个仓库的局部设置意外改变全部 `gh` 命令。
+- 显式调用 `gh.exe`，避免函数递归；命令结束后恢复原来的进程环境变量，不影响同一终端中的其他程序。
+
+### 安装并验证包装函数
+
+创建并打开 PowerShell 配置文件：
+
+```powershell
+if (!(Test-Path -LiteralPath $PROFILE)) {
+    New-Item -ItemType File -Path $PROFILE -Force
+}
+
+notepad $PROFILE
+```
+
+粘贴函数并保存，然后立即重新加载：
+
+```powershell
+. $PROFILE
+```
+
+确认 `gh` 已被包装函数接管，并检查 Git 能返回代理值：
+
+```powershell
+Get-Command gh
+git config --global --get-urlmatch http.proxy https://github.com/
+```
+
+`Get-Command gh` 的 `CommandType` 应为 `Function`。之后仍按原方式使用：
+
+```powershell
+gh auth login -h github.com
+gh api user
+gh pr list
+```
+
+需要临时绕过包装函数并直接运行 GitHub CLI 时，显式调用：
+
+```powershell
+gh.exe auth status
+```
+
+以后代理端口变化，只需修改 Git 配置：
+
+```powershell
+git config --global http.https://github.com/.proxy http://127.0.0.1:新端口
+```
+
+PowerShell 函数无需同步修改。
 
 ## 方案四：TUN 兜底
 
@@ -395,6 +510,7 @@ CreateProcessAsUserW failed: 1920
 - [ ] Codex、Claude 已完全退出后重新启动
 - [ ] 单实例桌面应用没有复用旧进程
 - [ ] `HTTP_PROXY`、`HTTPS_PROXY`、`ALL_PROXY` 协议和端口正确
+- [ ] Git 已能访问 GitHub 但 `gh` 失败时，已单独给 `gh.exe` 注入代理环境变量
 - [ ] Proxifier 的 Codex 规则同时包含 `Codex.exe` 和 `codex.exe`
 - [ ] 使用常规 Proxification Rules，而不是临时 `Proxify Application`
 - [ ] `Localhost` 和代理核心规则位于 Codex 规则上方并保持 Direct
@@ -466,6 +582,8 @@ Windows 下 `~/.claude` 等价于：
 - [Proxifier-CN 中文本地化包](https://github.com/1564307973/Proxifier-CN)
 - [Claude Code settings](https://code.claude.com/docs/en/settings)
 - [Codex Windows 官方文档](https://developers.openai.com/codex/windows)
+- [Git：`http.<url>.*` URL 匹配规则](https://git-scm.com/docs/git-config#Documentation/git-config.txt-httplturlgt)
+- [GitHub CLI：代理环境变量处理说明](https://github.com/cli/cli/issues/5244)
 - [Proxifier：Proxification Rules](https://www.proxifier.com/docs/win-v4/rules.html)
 - [Proxifier：Name Resolution](https://www.proxifier.com/docs/win-v4/dns.html)
 - [Proxifier：Proxy Settings](https://www.proxifier.com/docs/win-v4/proxy.html)
