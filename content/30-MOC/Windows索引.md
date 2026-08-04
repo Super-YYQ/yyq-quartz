@@ -23,6 +23,7 @@ Windows 软件、效率工具与环境配置笔记。
 
 - [[Codex Windows 微软商店安装包提取与手动更新]]：Microsoft Store 安装包提取、更新与备份
 - [[Codex Claude 软件级代理设置教程]]：Codex、Claude、Proxifier 的进程级代理与 DNS 排障
+- [[Claude Code Hook 通知与提示音配置]]：权限确认、回答完成和错误结束时的 Windows 通知与提示音
 - [[ChatGPT Windows 升级后 Proxifier 网络异常排查]]：升级后启动慢、语言回退、用量失败与审批模式缺失的代理 DNS 复盘
 - [[Tampermonkey多电脑同步指南]]：多台电脑间同步用户脚本、备份与冲突处理
 
