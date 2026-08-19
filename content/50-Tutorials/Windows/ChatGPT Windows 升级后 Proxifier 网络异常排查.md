@@ -2,6 +2,7 @@
 title: ChatGPT Windows 升级后 Proxifier 网络异常排查
 publish: true
 date: 2026-07-10
+updated: 2026-08-19
 tags:
   - windows
   - ChatGPT
@@ -12,6 +13,7 @@ tags:
 aliases:
   - ChatGPT Proxifier 排障
   - Codex 升级 ChatGPT 网络问题
+  - Codex 侧边栏图片上传失败
 type: tutorial
 status: stable
 ---
@@ -21,7 +23,7 @@ status: stable
 相关笔记：[[Codex Claude 软件级代理设置教程]]、[[Codex Windows 微软商店安装包提取与手动更新]]、[[Windows索引]]
 
 > [!success] 最终结论
-> 本次包含两个先后发生的问题。第一阶段是原有“按进程代理 + 选择性代理 DNS”没有完整覆盖新版访问方式；补充裸域名 `chatgpt.com` 并开启 Proxifier 的“DNS 和 IP 泄漏防护模式”后，启动速度、中文界面和审批模式恢复。第二阶段是重启后用量页再次失败；网络、账号和接口均验证正常，最终通过备份并移出升级后遗留的 Chromium 临时缓存恢复。具体损坏文件没有逐个隔离，但问题范围已定位在客户端临时缓存层。
+> 本文记录三类容易混淆的问题。第一类是原有“按进程代理 + 选择性代理 DNS”没有完整覆盖新版访问方式；补充裸域名 `chatgpt.com` 并开启 Proxifier 的“DNS 和 IP 泄漏防护模式”后，启动速度、中文界面和审批模式恢复。第二类是重启后用量页再次失败；网络、账号和接口均验证正常，最终通过备份并移出升级后遗留的 Chromium 临时缓存恢复。第三类是 Codex 任务正文可以附图，但 ChatGPT 侧边栏上传失败；日志把它定位到侧边栏文件接口所经过的 DNS/代理链路，而不是图片格式或权限。第三类完成了配置核对，但未记录修改后的成功复测，因此不能写成已闭环修复。
 
 ## 一、故障现象
 
@@ -305,7 +307,118 @@ Default\Session Storage
 
 如需回滚，应先退出 ChatGPT，将新生成的同名缓存目录另行改名，再从时间戳备份目录恢复；不要直接覆盖正在使用的新缓存。
 
-## 七、最终验证结果
+## 七、Codex 正文可附图，但侧边栏上传失败
+
+### 1. 先区分两个上传入口
+
+同一张小图片在 Codex 任务正文中可以读取，拖入 ChatGPT 侧边栏后却显示 `Upload failed`。这两个入口不能只凭界面相似就视为同一条上传链路。
+
+本次日志显示：
+
+| 入口 | 实际行为 | 诊断意义 |
+| --- | --- | --- |
+| Codex 任务正文 | 先把本地附件交给任务 | 能成功说明文件可读、格式和大小没有明显问题 |
+| ChatGPT 侧边栏 | 立即请求文件上传接口 | 会直接暴露 DNS、TLS、代理切换和上传域名覆盖问题 |
+
+因此，“一个入口成功、另一个入口失败”不等于侧边栏不支持图片，也不能优先归因于文件权限。
+
+### 2. 证据链与根因范围
+
+与失败时间对应的应用日志出现：
+
+```text
+POST /files -> net::ERR_NETWORK_CHANGED
+net::ERR_CERT_COMMON_NAME_INVALID
+```
+
+同时观察到以下现象：
+
+- OpenAI 相关域名被解析到 `127.x.x.x` 回环假地址，而不是公网地址。
+- `chatgpt.exe` 与 `codex.exe` 都命中了 Proxifier 的 AI 工具规则。
+- 侧边栏相关 HTTPS 连接存在“已发送数据、接收 0 字节”的记录。
+- IPv6/QUIC、mDNS 和非 A/AAAA 查询存在被阻止的记录。
+
+Proxifier 在“通过代理解析主机名”时会为域名分配 `127.x.x.x` 假地址；这种地址只有在后续连接继续被 Proxifier 正确接管时才有效。由此可把故障范围收敛为：**侧边栏文件接口经过的 Proxifier 与本地 SOCKS5 代理链路不稳定，或 DNS 假地址与进程接管没有保持一致**。
+
+> [!note]
+> “进程命中代理规则”只证明连接选择了某条规则，不代表 DNS、TLS 和 HTTP 上传已经成功。仍要结合接收字节数、错误码和同一时刻的日志判断。
+
+### 3. 不能使用 TUN 时的选择性代理配置
+
+在企业网络、安全客户端或 VPN 不允许开启 TUN 的环境中，可以保留单层进程代理：
+
+```text
+企业网络保持原状
+    -> Proxifier 只接管 ChatGPT / Codex
+    -> 本地代理工具只提供 SOCKS5 监听
+```
+
+本地代理工具保持：
+
+- TUN/虚拟网卡关闭。
+- 系统代理关闭。
+- 本地 SOCKS5 端口保持监听。
+
+Proxifier 规则按从上到下的顺序配置：
+
+| 顺序 | 规则 | 目标 | 动作 |
+| --- | --- | --- | --- |
+| 1 | Localhost | `localhost; 127.0.0.1; ::1` | Direct |
+| 2 | Private Networks | `10.0.0.0/8; 172.16.0.0/12; 192.168.0.0/16` | Direct |
+| 3 | AI Tools | `ChatGPT.exe; Codex.exe; codex.exe`，目标地址 Any | 本地 SOCKS5 |
+| 4 | Default | Any | Direct |
+
+不要为当前 DHCP 下发的 DNS 地址逐个写死规则。使用三个标准私网网段可以覆盖常见的企业 DNS 和内网地址，并避免网络切换后规则立即失效。
+
+> [!warning]
+> 不要把整个 `127.0.0.0/8` 设置为 Direct。Proxifier 的远程 DNS 可能使用该网段中的假地址；整体直连会绕开后续代理接管。Localhost 规则只保留明确需要的 `127.0.0.1` 与 `::1`。
+
+名称解析保持：
+
+```text
+关闭：自动检测 DNS 设置
+开启：通过代理解析主机名称
+选择：仅仅解析以下主机名
+```
+
+域名列表至少覆盖：
+
+```text
+chatgpt.com
+*.chatgpt.com
+*.openai.com
+*.oaistatic.com
+*.oaistatsig.com
+*.oaiusercontent.com
+*.auth.openai.com
+```
+
+`chatgpt.com` 与 `*.chatgpt.com` 要分别配置；通配子域名不能代替裸域名。
+
+### 4. 不要仅凭 UDP 阻止日志改配置
+
+配置核对时可能看到：
+
+```text
+non A/AAAA request blocked
+UDP / QUIC connection blocked
+```
+
+这通常来自“DNS 和 IP 泄漏防护模式”对 HTTPS/SVCB 类型查询和 UDP 的限制。它们能够解释日志中的 `connection blocked`，但普通 HTTPS 上传通常可以回退到 TCP，所以不能仅凭这些记录断定必须关闭防护。
+
+更稳妥的处理顺序是：
+
+1. 确认 Localhost、私网直连和 AI 工具规则的顺序。
+2. 确认本地 SOCKS5 端口确实由代理核心监听。
+3. 确认文件上传相关域名已纳入代理解析。
+4. 完全退出并重启 Proxifier 与 ChatGPT/Codex，清理旧的 `127.x.x.x` 映射。
+5. 使用同一张小图片复测侧边栏，并同步观察最新连接日志。
+6. 只有复测仍失败，且日志能把失败与非 A/AAAA 或 UDP 阻止对应起来时，才进行一次可回滚的 A/B 测试。
+
+> [!warning] 验证状态
+> 本次已经确认图片本身无异常、定位了 `/files` 网络错误，并只读核对了规则顺序、代理监听和域名覆盖；但没有记录重启后的侧边栏成功上传结果。后续复测成功前，应把结论表述为“网络链路问题已定位、配置已核对”，而不是“问题已经修复”。
+
+## 八、前两类故障的最终验证结果
 
 最终观察结果：
 
@@ -321,7 +434,7 @@ Default\Session Storage
 
 左下角原有的 5 小时、7 天用量和重置摘要没有恢复，但“设置 → 用量”已经正常。这属于本次新版界面布局变化，不是网络故障仍未解决。
 
-## 八、可复用的排查顺序
+## 九、可复用的排查顺序
 
 以后遇到类似问题，按以下顺序排查：
 
@@ -336,8 +449,9 @@ Default\Session Storage
 9. 优先使用 Windows“修复”；无效时，备份并选择性移出 Chromium 临时缓存。
 10. 最后才考虑退出登录或 Windows“重置”，因为它们可能触发重新认证并删除应用数据。
 11. 网络和用量页都恢复后，再判断侧边栏差异是否属于新版 UI 调整。
+12. 如果只有侧边栏附件失败，用同一文件对比两个入口，并在点击上传的同时检查 `/files`、上传域名和 Proxifier 接收字节数。
 
-## 九、公开发布与隐私
+## 十、公开发布与隐私
 
 本文使用 `publish: true`，仅保留可公开复用的配置和诊断方法。以下内容已经省略或替换为占位符：
 
@@ -346,11 +460,12 @@ Default\Session Storage
 - 公司域名、内网地址、VPN 路由和安全策略。
 - ChatGPT/Codex 会话 ID、线程 ID、日志文件名和进程实例 ID。
 - 本机 DNS 返回的具体异常 IP。
+- DHCP 下发的 DNS 地址、本地 SOCKS5 端口和代理配置文件名。
 - Proxifier 完整导出配置。
 - 实际 Chromium 缓存备份时间戳和本机用户名。
 - 登录令牌、账号 ID 和用量接口响应正文。
 
-## 十、参考链接
+## 十一、参考链接
 
 - [OpenAI：ChatGPT 网页和应用网络错误建议](https://help.openai.com/en/articles/9247338-network-recommendations-for-chatgpt-errors-on-web-and-apps)
 - [OpenAI：通过 ChatGPT 套餐使用 Codex](https://help.openai.com/en/articles/11369540-using-codex-with-chatgpt)
