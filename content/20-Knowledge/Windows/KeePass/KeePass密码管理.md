@@ -2,6 +2,7 @@
 title: KeePass 密码管理
 publish: true
 date: 2026-05-26
+updated: 2026-09-11
 tags:
   - keepass
   - 密码管理
@@ -20,9 +21,10 @@ status: stable
 
 相关笔记：[[电脑必备软件]]
 
-扩展阅读：[一劳永逸：KeePass全网最详使用指南](https://zhuanlan.zhihu.com/p/39645975)
-
 官方下载：[KeePass 官网](https://keepass.info/download.html)
+
+> [!note] 本文性质
+> 这是一份**个人整理笔记**，按自己的使用顺序重写了 KeePass 与插件配置要点，不是原文转载。主要参考来源见文末「来源与致谢」。原文写于 2018 年，针对 KeePass 2.x 时代，插件版本与下载入口请以官网和仓库现状为准。
 
 ## 一、安装与中文配置
 
@@ -275,3 +277,13 @@ KeePassHttp 作为插件运行在 KeePass 中，chromeIPass 作为 Chrome 扩展
 ### 9.3 自动输入失效
 
 目标程序以管理员权限运行时，KeePass 也需以管理员权限运行。
+
+## 十、来源与致谢
+
+本文是在他人公开教程基础上重写的个人整理笔记，不是原文转载；章节结构、取舍和补记的踩坑点由本人决定。参考来源：
+
+- 《一劳永逸：KeePass全网最详使用指南》，知乎专栏，2018-07-13，作者署名 tactk：[zhuanlan.zhihu.com/p/39645975](https://zhuanlan.zhihu.com/p/39645975)。知乎正文可能需要登录才能查看。
+- 作者个人站点战术客上的相关 KeePass 文章（同样是 tactk，标题即《KeePass入门探索——全自动切换英文输入并切回及自动调用技巧》），2018-09-26：[tacgeek.com/1937-keepass.html](https://www.tacgeek.com/1937-keepass.html)。
+- KeePass 官方插件列表：[keepass.info/plugins.html](https://keepass.info/plugins.html)。
+
+原文截图托管在知乎图床，禁止外站引用（直接请求返回 403），而本仓库的发布管道只同步 Markdown、不同步图片，所以这里只保留文字步骤，界面细节请对照官方文档或原作者原文。需要完整配图版请直接阅读原作者文章。

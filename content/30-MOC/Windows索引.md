@@ -27,6 +27,15 @@ Windows 软件、效率工具与环境配置笔记。
 - [[ChatGPT Windows 升级后 Proxifier 网络异常排查]]：升级后启动、用量、侧边栏附件失败与 Proxifier DNS 链路排查
 - [[Tampermonkey多电脑同步指南]]：多台电脑间同步用户脚本、备份与冲突处理
 
+## 网络与代理
+
+- [[为 Linux.do 指定固定 DNS 与直连规则]]：Clash Verge Rev、FlClash 的 DoH 与 DIRECT 规则
+- [[美国 VPS 搭建 AI 专用出口 Xray REALITY 与 FlClash 分流教程]]：VPS 自建 Xray REALITY 与 AI 分流
+
+## Git 与 GitHub
+
+- [[GitHub 提交邮箱隐私与 Git 多身份配置]]：隐藏提交邮箱，并按目录自动切换公司、个人身份
+
 ## 知识库发布
 
 - [[Obsidian 私人知识库自动发布 Quartz 与 Cloudflare Pages]]：从私人笔记筛选公开内容，并自动部署为静态网站

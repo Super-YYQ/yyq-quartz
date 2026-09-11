@@ -74,7 +74,7 @@ publish: true
       <span>持续记录</span>
       <span>公开分享</span>
       <span>知识链接</span>
-      <span>已发布 16 篇</span>
+      <span>已发布 18 篇</span>
     </div>
   </div>
 </section>
