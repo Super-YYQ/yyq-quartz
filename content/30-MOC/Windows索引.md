@@ -18,7 +18,7 @@ Windows 软件、效率工具与环境配置笔记。
 
 - [[电脑必备软件]]：常用工具清单
 - [[KeePass密码管理]]：KeePass 安装、安全配置、自动输入与插件实践
-- [[KeePassXC 推荐配置与使用指南]]：KeePassXC 主力配置、浏览器集成、TOTP/Passkey 与 SSH Agent
+- [[KeePassXC 推荐配置与使用指南]]：KeePassXC 2.7.12 简体中文界面推荐配置、浏览器集成、TOTP/Passkey 与 SSH Agent
 
 ## Codex
 
