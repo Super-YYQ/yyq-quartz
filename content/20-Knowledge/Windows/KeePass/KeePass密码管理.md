@@ -2,7 +2,7 @@
 title: KeePass 密码管理
 publish: true
 date: 2026-05-26
-updated: 2026-09-11
+updated: 2026-09-15
 tags:
   - keepass
   - 密码管理
@@ -19,7 +19,7 @@ status: stable
 
 开源免费的密码管理器，支持 Windows / Android / Chrome，通过插件扩展实现自动填充、两步验证、跨平台同步。
 
-相关笔记：[[电脑必备软件]]
+相关笔记：[[电脑必备软件]]、[[KeePassXC 推荐配置与使用指南]]
 
 官方下载：[KeePass 官网](https://keepass.info/download.html)
 
