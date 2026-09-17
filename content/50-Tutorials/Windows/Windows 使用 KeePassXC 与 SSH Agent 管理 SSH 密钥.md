@@ -20,7 +20,7 @@ aliases:
 
 本文在 Windows 10/11 上使用系统 OpenSSH Agent，并把私钥作为附件保存在 KeePassXC 数据库中。解锁数据库后，KeePassXC 将密钥加载到 Agent；SSH 客户端无需直接读取裸私钥文件。
 
-相关笔记：[[KeePassXC 推荐配置与使用指南]]、[[KeePass密码管理]]、[[GitHub 提交邮箱隐私与 Git 多身份配置]]。
+相关笔记：[[KeePassXC 推荐配置与使用指南]]、[[KeePass密码管理]]、[[GitHub 提交邮箱隐私与 Git 多身份配置]]、[[Debian SSH 密钥登录排障与安全加固]]。
 
 > [!important]
 > KeePassXC 不是 SSH Agent。它是 Windows OpenSSH Agent 或 Pageant 的客户端，负责在数据库解锁和锁定时添加、移除密钥。

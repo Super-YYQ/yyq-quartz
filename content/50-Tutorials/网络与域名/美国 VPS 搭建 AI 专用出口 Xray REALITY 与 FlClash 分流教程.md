@@ -12,7 +12,7 @@ tags:
   - AI
   - 网络
 created: 2026-09-11
-updated: 2026-09-11
+updated: 2026-09-17
 type: tutorial
 status: stable
 publish: true
@@ -30,6 +30,8 @@ publish: true
 > - VPS 仍保留为“机场故障时的手动应急出口”，但不参加机场自动测速组。
 >
 > 本文是**已实际跑通过的阶段性方案**整理版。为了可以公开发布，所有真实 IP、SSH 端口、UUID、REALITY 私钥/公钥、Short ID、机场节点名、订阅地址等均已替换为占位符。
+
+服务器密钥登录和关闭密码认证的后续步骤见：[[Debian SSH 密钥登录排障与安全加固]]。
 
 ---
 
