@@ -2,7 +2,7 @@
 title: KeePassXC 推荐配置与使用指南
 publish: true
 date: 2026-09-15
-updated: 2026-09-15
+updated: 2026-09-17
 tags:
   - KeePassXC
   - KeePass
@@ -613,6 +613,8 @@ Recovery Codes
 ## 17. SSH 代理
 
 适合 GitHub、GitLab、VPS、Linux 服务器。
+
+完整配置与排障步骤见：[[Windows 使用 KeePassXC 与 SSH Agent 管理 SSH 密钥]]。
 
 KeePassXC 不是 SSH Agent 本身，而是现有 SSH Agent 的客户端。
 
